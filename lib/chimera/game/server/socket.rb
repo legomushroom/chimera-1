@@ -6,6 +6,10 @@ module Chimera
       ##
       # Represents a connected game client
       class Socket
+        include RactorCommon
+
+        # The logger needs to be set after the socket has been placed into the
+        # ractor.
         attr_accessor :logger
         attr_reader :id
 
@@ -16,6 +20,12 @@ module Chimera
 
         def start
           logger.info("received connection from #{remote_ip}@#{id}")
+          create_logging_ractor(connection) do |_logger, connection|
+            loop do
+              c = connection.readline
+              c.strip!("\r\n")
+            end
+          end
         end
 
         private

@@ -9,6 +9,8 @@ module Chimera
       # The Game::Server fronts the TCP access to the game and manages
       # communication between the player and the game world.
       class Instance
+        include Logging
+        include RactorCommon
         def self.start(host:, port:)
           new(host, port).start
         end
@@ -51,18 +53,6 @@ module Chimera
           end
         end
         # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
-
-        def create_pipe
-          Ractor.new do
-            loop do
-              Ractor.yield(Ractor.receive, move: true)
-            end
-          end
-        end
-
-        def create_logging_ractor(*args, &block)
-          Ractor.new(Rails.logger, *args, &block)
-        end
 
         attr_reader :pipe, :host, :port, :handlers
       end
