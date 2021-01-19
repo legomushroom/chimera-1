@@ -4,10 +4,10 @@ require "singleton"
 
 module Chimera
   module Game
-    ##
-    # The Game::Server fronts the TCP access to the game and manages
-    # communication between the player and the game world.
     module Server
+      ##
+      # The Game::Server fronts the TCP access to the game and manages
+      # communication between the player and the game world.
       class Instance
         def self.start(host:, port:)
           new(host, port).start
@@ -16,44 +16,55 @@ module Chimera
         def initialize(host, port)
           @host = host
           @port = port
-          @listener = TCPServer.open(host, port)
           @handlers = []
 
-          @handler_pipe = Ractor.new do
-            loop do
-              Ractor.yield(Ractor.receive, move: true)
-            end
-          end
-
-          @server_pipe = Ractor.new do
-            loop do
-              Ractor.yield(Ractor.receive, move: true)
-            end
-          end
+          @pipe = create_pipe
         end
 
         def start
-          Rails.logger.debug("waiting for connections")
-          Rails.logger.debug("creating server on tcp://#{host}:#{port}")
-          loop do
-            handler = Ractor.new(handler_pipe, server_pipe) do |hp, _sp|
-              s = hp.take
-              s.start
-              puts "tooken"
-            end
+          start_server
 
-            server = Ractor.new(server_pipe, handler_pipe) do |sp, hp|
-              s = sp.take
-              connection = s.accept
-              socket = Socket.new(connection)
-              hp.send(socket, move: true)
+          loop do
+            sock = pipe.take
+
+            handlers << create_logging_ractor(sock) do |logger, socket|
+              socket.logger = logger
+              socket.start
             end
           end
         end
 
         private
 
-        attr_reader :pipe, :host, :port, :handlers, :server, :handler_pipe, :server_pipe, :listener
+        # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
+        def start_server
+          Rails.logger.info("creating server on tcp://#{host}:#{port}")
+          create_logging_ractor(pipe, host, port) do |logger, pipe, host, port|
+            logger.debug("starting server")
+            server = TCPServer.open(host, port)
+            loop do
+              connection = server.accept
+              socket = Socket.new(connection)
+              logger.debug("accepted connection #{socket.id}")
+              pipe.send(socket, move: true)
+            end
+          end
+        end
+        # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
+
+        def create_pipe
+          Ractor.new do
+            loop do
+              Ractor.yield(Ractor.receive, move: true)
+            end
+          end
+        end
+
+        def create_logging_ractor(*args, &block)
+          Ractor.new(Rails.logger, *args, &block)
+        end
+
+        attr_reader :pipe, :host, :port, :handlers
       end
     end
   end

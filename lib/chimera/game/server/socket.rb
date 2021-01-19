@@ -3,7 +3,10 @@
 module Chimera
   module Game
     module Server
+      ##
+      # Represents a connected game client
       class Socket
+        attr_accessor :logger
         attr_reader :id
 
         def initialize(connection)
@@ -12,7 +15,7 @@ module Chimera
         end
 
         def start
-          Rails.logger.info("received connection from #{remote_ip}")
+          logger.info("received connection from #{remote_ip}@#{id}")
         end
 
         private

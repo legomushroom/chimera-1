@@ -6,6 +6,8 @@ gemspec
 
 group :development do
   gem "puma"
+  gem "rubocop"
+  gem "solargraph"
 end
 
 # To use a debugger
