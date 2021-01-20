@@ -23,7 +23,7 @@ module Chimera
           create_logging_ractor(connection) do |_logger, connection|
             loop do
               c = connection.readline
-              c.strip!("\r\n")
+              c.strip!
             end
           end
         end

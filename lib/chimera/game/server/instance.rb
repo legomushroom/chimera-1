@@ -11,6 +11,7 @@ module Chimera
       class Instance
         include Logging
         include RactorCommon
+
         def self.start(host:, port:)
           new(host, port).start
         end
@@ -24,12 +25,13 @@ module Chimera
         end
 
         def start
+          Nats.ensure_connection
           start_server
 
           loop do
             sock = pipe.take
 
-            handlers << create_logging_ractor(sock) do |logger, socket|
+            create_logging_ractor(sock) do |logger, socket|
               socket.logger = logger
               socket.start
             end

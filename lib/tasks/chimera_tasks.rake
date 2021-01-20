@@ -14,7 +14,7 @@ namespace :chimera do
     puts "*          PID: #{Process.pid}"
     puts "* Listening on tcp://#{host}:#{port}"
 
-    Rails.logger = Logger.new(STDOUT)
+    Rails.logger = Logger.new($stdout)
 
     Chimera::Game::Server.start(
       host: host,
