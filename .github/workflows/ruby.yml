@@ -47,6 +47,8 @@ jobs:
         run: bundle exec rails db:create
         env:
           RAILS_ENV: test
+      - name: Run rubocop
+        run: bundle exec rubocop
       - name: Run tests
         run: bundle exec rake
         env:
