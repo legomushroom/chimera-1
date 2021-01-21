@@ -21,4 +21,17 @@ namespace :chimera do
       port: port
     )
   end
+
+  task world: :environment do
+    require "chimera/game/world"
+    puts "=> Booting Chimera MUD World"
+    puts "=> Rails #{Rails::VERSION::STRING} starting in #{Rails.env}"
+
+    puts "*  Environment: #{Rails.env}"
+    puts "*          PID: #{Process.pid}"
+
+    Rails.logger = Logger.new($stdout)
+
+    Chimera::Game::World.start
+  end
 end
