@@ -4,6 +4,7 @@
 ARG VARIANT="focal"
 FROM mcr.microsoft.com/vscode/devcontainers/base:focal
 
+RUN apt-get update
 RUN apt-get install build-essential
 
 RUN git clone https://github.com/rbenv/rbenv.git ~/.rbenv
