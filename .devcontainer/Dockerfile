@@ -1,6 +1,6 @@
 # [Choice] Ruby version: 2, 2.7, 2.6, 2.5
 ARG VARIANT=2.7
-FROM mcr.microsoft.com/vscode/devcontainers/ruby:2.7
+FROM mcr.microsoft.com/vscode/devcontainers/ubuntu:20.10
 
 ARG NODE_VERSION="lts/*"
 RUN su vscode -c "source /usr/local/share/nvm/nvm.sh && nvm install ${NODE_VERSION} 2>&1"

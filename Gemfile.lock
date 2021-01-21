@@ -95,9 +95,13 @@ GEM
     method_source (1.0.0)
     mimemagic (0.3.5)
     mini_mime (1.0.2)
+    mini_portile2 (2.5.0)
     minitest (5.14.3)
     nats-pure (0.6.2)
     nio4r (2.5.4)
+    nokogiri (1.11.1)
+      mini_portile2 (~> 2.5.0)
+      racc (~> 1.4)
     nokogiri (1.11.1-x86_64-linux)
       racc (~> 1.4)
     parallel (1.20.1)
@@ -187,6 +191,7 @@ GEM
     zeitwerk (2.4.2)
 
 PLATFORMS
+  ruby
   x86_64-linux
 
 DEPENDENCIES
@@ -194,6 +199,9 @@ DEPENDENCIES
   puma
   rubocop
   solargraph
+
+RUBY VERSION
+   ruby 3.0.0p0
 
 BUNDLED WITH
    2.2.3
