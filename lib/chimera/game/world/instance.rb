@@ -6,10 +6,14 @@ module Chimera
       ##
       # The instance of the game world.
       class Instance
+        include Nats::Common
+        include Ractor::Common
+        include Logging
+
         def initialize; end
 
         def start
-          Nats.ensure_connection
+          ensure_nats_connection
         end
       end
     end

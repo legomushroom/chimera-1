@@ -9,8 +9,8 @@ module Chimera
     module Common
       extend ActiveSupport::Concern
 
-      def establish_connection
-        Nats.establish_connection
+      def ensure_nats_connection
+        Nats.ensure_connection
       end
     end
   end

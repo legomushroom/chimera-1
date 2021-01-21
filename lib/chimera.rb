@@ -2,6 +2,6 @@
 
 require "chimera/version"
 require "chimera/engine"
-require "chimera/ractor_common"
+require "chimera/ractor"
 require "chimera/logging"
 require "chimera/nats"

@@ -3,7 +3,8 @@
 require_relative "lib/chimera/version"
 
 Gem::Specification.new do |spec|
-  spec.name        = "chimera"
+  spec.name = "chimera"
+  spec.required_ruby_version = "~> 3.0"
   spec.version     = Chimera::VERSION
   spec.authors     = ["Jarod Reid"]
   spec.email       = ["jarod@solidalchemy.com"]
@@ -17,6 +18,6 @@ Gem::Specification.new do |spec|
   spec.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
 
   spec.add_dependency "nats-pure", "~> 0.6.2"
+  spec.add_dependency "pg", "~> 1.2"
   spec.add_dependency "rails", "~> 6.1"
-  spec.add_dependency "pg",    "~> 1.2"
 end

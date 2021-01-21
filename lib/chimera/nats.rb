@@ -2,7 +2,7 @@
 
 require "nats/io/client"
 
-require "chimera/logging"
+require "chimera/nats/common"
 
 module Chimera
   ##
@@ -25,10 +25,6 @@ module Chimera
       return @connection if @connection
 
       @connection = NATS::IO::Client.new
-
-      @connection.on_error do |error|
-        Rails.logger.error(error)
-      end
 
       @connection
     end
