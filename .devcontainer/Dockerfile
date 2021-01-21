@@ -3,6 +3,7 @@
 # [Choice] Ubuntu version: bionic, focal
 FROM ruby:3.0.0-buster
 
+RUN apt-get install byobu
 RUN bash -c "$(curl -fsSL https://raw.githubusercontent.com/ohmybash/oh-my-bash/master/tools/install.sh)"
 RUN gem install rubocop
 RUN gem install solargraph
