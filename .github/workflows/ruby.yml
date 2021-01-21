@@ -49,3 +49,4 @@ jobs:
         run: bundle exec rake
         env:
           RAILS_ENV: test
+          POSTGRES_HOST: postgres
