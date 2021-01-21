@@ -4,8 +4,12 @@
 ARG VARIANT="focal"
 FROM mcr.microsoft.com/vscode/devcontainers/base:focal
 
+RUN curl -sSL https://get.rvm.io | bash -s stable
+
 RUN /usr/local/rvm/bin/rvm install ruby-3.0.0
 RUN /usr/local/rvm/bin/rvm use ruby-3.0.0 --default
+
+
 
 
 # [Optional] Uncomment this section to install additional OS packages.
