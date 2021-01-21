@@ -78,6 +78,10 @@ GEM
       debase-ruby_core_source (>= 0.10.2)
     debase-ruby_core_source (0.10.12)
     diff-lcs (1.4.4)
+    dotenv (2.7.6)
+    dotenv-rails (2.7.6)
+      dotenv (= 2.7.6)
+      railties (>= 3.2)
     e2mmap (0.1.0)
     erubi (1.10.0)
     globalid (0.4.2)
@@ -223,6 +227,7 @@ PLATFORMS
 DEPENDENCIES
   chimera!
   debase
+  dotenv-rails
   puma
   rspec-rails
   rubocop

@@ -10,6 +10,7 @@ gemspec
 
 group :development, :test do
   gem "debase"
+  gem "dotenv-rails"
   gem "puma"
   gem "rspec-rails"
   gem "rubocop"
