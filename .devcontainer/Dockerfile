@@ -1,7 +1,7 @@
 # See here for image contents: https://github.com/microsoft/vscode-dev-containers/tree/v0.145.1/containers/ubuntu/.devcontainer/base.Dockerfile
 
 # [Choice] Ubuntu version: bionic, focal
-FROM rubylane/ruby:3.0.0-focal
+FROM rubylang/ruby:3.0.0-focal
 
 RUN apt-get update
 RUN apt-get install -y byobu
