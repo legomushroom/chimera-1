@@ -2,7 +2,7 @@
 
 # [Choice] Ubuntu version: bionic, focal
 ARG VARIANT="focal"
-FROM mcr.microsoft.com/vscode/devcontainers/base:0-${VARIANT}
+FROM mcr.microsoft.com/vscode/devcontainers/base:focal
 
 RUN /usr/local/rvm/bin/rvm install ruby-3.0.0
 RUN /usr/local/rvm/bin/rvm use ruby-3.0.0 --default
