@@ -11,6 +11,10 @@ RSpec.describe Chimera::Nats do
       allow(NATS::IO::Client).to receive(:new).and_return(client)
     end
 
+    after :each do
+      described_class.remove_instance_variable(:@connection)
+    end
+
     it "creates a new connetion instance if not yet created" do
       allow(client).to receive(:connected?).and_return(false)
       expect(client).to receive(:connect)
