@@ -16,5 +16,6 @@ group :development, :test do
   gem "rubocop"
   gem "rubocop-rspec"
   gem "ruby-debug-ide"
+  gem "simplecov"
   gem "solargraph"
 end
