@@ -1,2 +1,1 @@
-Rails.application.routes.draw do
-end
+# frozen_string_literal: true

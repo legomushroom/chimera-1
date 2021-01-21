@@ -13,6 +13,8 @@ Dotenv::Railtie.load
 require "chimera"
 
 module Dummy
+  ##
+  # Dummy application
   class Application < Rails::Application
     config.load_defaults Rails::VERSION::STRING.to_f
 
