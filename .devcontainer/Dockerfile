@@ -1,9 +1,10 @@
 # See here for image contents: https://github.com/microsoft/vscode-dev-containers/tree/v0.145.1/containers/ubuntu/.devcontainer/base.Dockerfile
 
 # [Choice] Ubuntu version: bionic, focal
-FROM ruby:3.0.0-buster
+FROM rubylane/ruby:3.0.0-focal
 
-RUN apt-get install byobu
+RUN apt-get update
+RUN apt-get install -y byobu
 RUN bash -c "$(curl -fsSL https://raw.githubusercontent.com/ohmybash/oh-my-bash/master/tools/install.sh)"
 RUN gem install rubocop
 RUN gem install solargraph
