@@ -5,7 +5,7 @@ ARG VARIANT="focal"
 FROM mcr.microsoft.com/vscode/devcontainers/base:focal
 
 RUN apt-get update
-RUN apt-get install build-essential
+RUN apt-get install -y build-essential
 
 RUN git clone https://github.com/rbenv/rbenv.git ~/.rbenv
 RUN git clone https://github.com/rbenv/ruby-build.git "$(/root/.rbenv/bin/rbenv root)"/plugins/ruby-build
