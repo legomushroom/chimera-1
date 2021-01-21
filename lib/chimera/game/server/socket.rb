@@ -6,7 +6,7 @@ module Chimera
       ##
       # Represents a connected game client
       class Socket
-        include RactorCommon
+        include Ractor::Common
 
         # The logger needs to be set after the socket has been placed into the
         # ractor.

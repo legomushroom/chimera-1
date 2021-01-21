@@ -10,7 +10,7 @@ module Chimera
       # communication between the player and the game world.
       class Instance
         include Logging
-        include RactorCommon
+        include Ractor::Common
 
         def self.start(host:, port:)
           new(host, port).start
@@ -28,7 +28,7 @@ module Chimera
           Nats.ensure_connection
           start_server
 
-          loop do
+          until @stopped
             sock = pipe.take
 
             create_logging_ractor(sock) do |logger, socket|
@@ -36,6 +36,10 @@ module Chimera
               socket.start
             end
           end
+        end
+
+        def stop
+          @stopped = true
         end
 
         private

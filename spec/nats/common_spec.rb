@@ -7,7 +7,7 @@ RSpec.describe Chimera::Nats::Common do
   subject do
     Class.new do
       include Chimera::Nats::Common
-    end.new
+    end.new(nats_host: "localhost", nats_port: "4222")
   end
 
   describe "#ensure_nats_connection" do

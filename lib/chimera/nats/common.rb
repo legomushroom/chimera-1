@@ -9,6 +9,12 @@ module Chimera
     module Common
       extend ActiveSupport::Concern
 
+      def initialize(nats_host:, nats_port:, **args)
+        super(**args)
+        @nats_host = nats_host
+        @nats_post = nats_port
+      end
+
       def ensure_nats_connection
         Nats.ensure_connection
       end
