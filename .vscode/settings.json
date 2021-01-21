@@ -1,0 +1,5 @@
+{
+  "editor.formatOnSave": true,
+  "editor.formatOnSaveTimeout": 5000,
+  "ruby.format": "rubocop"
+}

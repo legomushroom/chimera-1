@@ -1,0 +1,12 @@
+{
+  "folders": [
+    {
+      "path": "./"
+    },
+  ],
+  "settings": {
+    "ruby.rubocop.configFilePath": "/root/workspace/chimera/.rubocop.yml",
+    "ruby.rubocop.executePath": "/root/.rbenv/shims/",
+    "ruby.useLanguageServer": true
+  }
+}

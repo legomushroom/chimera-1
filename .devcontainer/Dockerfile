@@ -1,16 +1,11 @@
 # See here for image contents: https://github.com/microsoft/vscode-dev-containers/tree/v0.145.1/containers/ubuntu/.devcontainer/base.Dockerfile
 
 # [Choice] Ubuntu version: bionic, focal
-ARG VARIANT="focal"
-FROM mcr.microsoft.com/vscode/devcontainers/base:focal
+FROM ruby:3.0.0-buster
 
-RUN apt-get update
-RUN apt-get install -y build-essential libssl-dev zlib1g-dev
-
-RUN git clone https://github.com/rbenv/rbenv.git ~/.rbenv
-RUN git clone https://github.com/rbenv/ruby-build.git "$(/root/.rbenv/bin/rbenv root)"/plugins/ruby-build
-
-RUN /root/.rbenv/bin/rbenv install 3.0.0
+RUN bash -c "$(curl -fsSL https://raw.githubusercontent.com/ohmybash/oh-my-bash/master/tools/install.sh)"
+RUN gem install rubocop
+RUN gem install solargraph
 
 
 # [Optional] Uncomment this section to install additional OS packages.
