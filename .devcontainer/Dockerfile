@@ -7,7 +7,7 @@ FROM mcr.microsoft.com/vscode/devcontainers/base:focal
 RUN git clone https://github.com/rbenv/rbenv.git ~/.rbenv
 RUN git clone https://github.com/rbenv/ruby-build.git "$(/root/.rbenv/bin/rbenv root)"/plugins/ruby-build
 
-RUN /root/.rbenv/bin/rbenv install ruby-3.0.0
+RUN /root/.rbenv/bin/rbenv install 3.0.0
 
 
 # [Optional] Uncomment this section to install additional OS packages.
