@@ -9,14 +9,18 @@ module Chimera
       # The Game::Server fronts the TCP access to the game and manages
       # communication between the player and the game world.
       class Instance
+        attr_reader :started
+
         include Logging
         include Ractor::Common
+        include Nats::Common
 
         def self.start(host:, port:)
           new(host, port).start
         end
 
-        def initialize(host, port)
+        def initialize(host: "localhost", port: "2323", **args)
+          super(**args)
           @host = host
           @port = port
           @handlers = []
@@ -25,9 +29,10 @@ module Chimera
         end
 
         def start
-          Nats.ensure_connection
+          ensure_nats_connection
           start_server
 
+          @started = true
           until @stopped
             sock = pipe.take
 
@@ -36,10 +41,12 @@ module Chimera
               socket.start
             end
           end
+
+          @started = false
         end
 
         def stop
-          @stopped = true
+          @stopped = false
         end
 
         private

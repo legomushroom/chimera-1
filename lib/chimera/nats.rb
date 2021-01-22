@@ -10,11 +10,10 @@ module Chimera
   module Nats
     module_function
 
-    def ensure_connection
+    def ensure_connection(host, port)
       return true if connection.connected?
 
-      nats_url = "nats://#{ENV['CHIMERA_NATS_HOST'] || '127.0.0.1'}:" +
-                 (ENV["CHIMERA_NATS_PORT"] || "4222")
+      nats_url = "nats://#{host}:#{port}"
 
       Rails.logger.info("NATS connecting to #{nats_url}")
       connection.connect(servers: [nats_url])

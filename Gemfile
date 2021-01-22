@@ -9,8 +9,10 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 gemspec
 
 group :development, :test do
+  gem "byebug"
   gem "debase"
   gem "dotenv-rails"
+  gem "pry-byebug"
   gem "puma"
   gem "rspec-rails"
   gem "rubocop"

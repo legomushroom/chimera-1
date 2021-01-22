@@ -18,16 +18,16 @@ RSpec.describe Chimera::Nats do
     it "creates a new connetion instance if not yet created" do
       allow(client).to receive(:connected?).and_return(false)
       expect(client).to receive(:connect)
-        .with(servers: ["nats://127.0.0.1:4222"])
+        .with(servers: ["nats://127.0.0.1:4333"])
 
-      described_class.ensure_connection
+      described_class.ensure_connection("127.0.0.1", "4333")
     end
 
     it "does not try to reconnect if the client is already connected" do
       allow(client).to receive(:connected?).and_return(true)
       expect(client).to_not receive(:connect)
 
-      described_class.ensure_connection
+      described_class.ensure_connection("127.0.0.1", "2323")
     end
   end
 end
