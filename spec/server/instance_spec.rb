@@ -2,9 +2,9 @@
 
 require "rails_helper"
 
-require "chimera/game/server"
+require "chimera/server"
 
-RSpec.describe Chimera::Game::Server::Instance do
+RSpec.describe Chimera::Server::Instance do
   subject { described_class.new(port: "3232") }
 
   before :each do
