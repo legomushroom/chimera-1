@@ -18,7 +18,7 @@ namespace :chimera do
 
     Rails.logger = Logger.new($stdout)
 
-    Chimera::Server.start(
+    Chimera::Server.run(
       host: host,
       port: port,
       nats_host: nats_host,

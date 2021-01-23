@@ -7,7 +7,7 @@ module Chimera
   # The Game World provides the actual game interaction
   module World
     def self.start
-      Instance.new.start
+      Instance.new.run
     end
   end
 end

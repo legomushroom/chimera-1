@@ -9,8 +9,6 @@ module Chimera
       include Ractor::Common
       include Logging
 
-      def initialize; end
-
       def start
         ensure_nats_connection
       end

@@ -7,8 +7,8 @@ module Chimera
   ##
   # The game server provides the actual connectivity for the player clients
   module Server
-    def self.start(host:, port:, nats_host:, nats_port:)
-      Instance.start(
+    def self.run(host:, port:, nats_host:, nats_port:)
+      Instance.run(
         host: host,
         port: port,
         nats_host: nats_host,

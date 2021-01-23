@@ -14,13 +14,13 @@ module Chimera
       include Ractor::Common
       include Nats::Common
 
-      def self.start(host:, port:, nats_host:, nats_port:)
+      def self.run(host:, port:, nats_host:, nats_port:)
         new(
           host: host,
           port: port,
           nats_host: nats_host,
           nats_port: nats_port
-        ).start
+        ).run
       end
 
       def initialize(host: "localhost", port: "2323", **args)
@@ -30,6 +30,7 @@ module Chimera
         @handlers = []
 
         @pipe = create_pipe
+        @shutdown = create_pipe
       end
 
       def start
@@ -40,7 +41,6 @@ module Chimera
         ensure_nats_connection
         start_server
         start_listener
-        puts "listener started"
         self.started = true
       end
 
@@ -58,21 +58,33 @@ module Chimera
       # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
       def start_server
         logger.info("creating server on tcp://#{host}:#{port}")
-        create_logging_ractor(pipe, host, port) do |logger, pipe, host, port|
+        create_logging_ractor(pipe, shutdown, host, port) do |logger, pipe, shutdown, host, port|
           logger.debug("starting server")
           server = TCPServer.open(host, port)
+
+          ::Ractor.new(logger, shutdown, server) do |lg, sd, sv|
+            sd.take
+            lg.debug("stopping server")
+            sv.close
+          end
+
+          logger.info("ready to accept new connections")
           loop do
+            logger.debug("waiting for new connection")
             connection = server.accept
+            logger.debug("new connection received, creating socket")
             socket = Socket.new(connection)
-            logger.debug("accepted connection #{socket.id}")
+            logger.debug("socket created, accepted connection #{socket.id}")
+            logger.debug("moving socket to handler")
             pipe.send(socket, move: true)
+          rescue EOFError
+            break
           end
         end
       end
-      # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 
       def start_listener
-        @listener = create_logging_ractor(pipe) do |logger, p|
+        @listener = create_logging_ractor(pipe, shutdown) do |logger, p, sd|
           loop do
             sock = p.take
 
@@ -83,10 +95,13 @@ module Chimera
               socket.start
             end
           end
+          logger.info("server is shutting down")
+          sd << true
         end
       end
+      # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 
-      attr_reader :pipe, :host, :port, :listener
+      attr_reader :pipe, :host, :port, :listener, :shutdown
     end
   end
 end
