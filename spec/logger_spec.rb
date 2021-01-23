@@ -11,7 +11,7 @@ RSpec.describe Chimera::Logging do
 
   describe "#logger" do
     it "returns the rails logger" do
-      expect(subject.logger).to eq(Rails.logger)
+      expect(subject.logger).to be_a(Logger)
     end
   end
 end

@@ -14,7 +14,8 @@ RSpec.describe Chimera::Server::Instance do
   describe "#start" do
     it "starts the nats connection" do
       expect(Chimera::Nats).to receive(:ensure_connection).and_return(true)
-      Thread.new { subject.start }
+
+      subject.start
       sleep 0.1 until subject.started
       subject.stop
     end

@@ -9,7 +9,7 @@ module Chimera
     extend ActiveSupport::Concern
 
     def logger
-      Rails.logger
+      @logger ||= Logger.new($stdout)
     end
   end
 end

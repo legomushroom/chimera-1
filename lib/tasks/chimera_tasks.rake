@@ -4,11 +4,13 @@ require "chimera/version"
 
 namespace :chimera do
   task server: :environment do
-    require "chimera/game/server"
+    require "chimera/server"
     puts "=> Booting Chimera MUD TCP Server #{Chimera::VERSION}"
     puts "=> Rails #{Rails::VERSION::STRING} starting in #{Rails.env}"
-    host = ENV["CHIMERA_SERVER_HOST"] || "127.0.0.1"
-    port = ENV["CHIMERA_SERVER_PORT"] || 2323
+    host = ENV.fetch("CHIMERA_SERVER_HOST", "127.0.0.1")
+    port = ENV.fetch("CHIMERA_SERVER_PORT", 2323)
+    nats_host = ENV.fetch("CHIMERA_NATS_HOST", "localhost")
+    nats_port = ENV.fetch("CHIMERA_NATS_PORT", "4222")
 
     puts "*  Environment: #{Rails.env}"
     puts "*          PID: #{Process.pid}"
@@ -16,9 +18,11 @@ namespace :chimera do
 
     Rails.logger = Logger.new($stdout)
 
-    Chimera::Game::Server.start(
+    Chimera::Server.start(
       host: host,
-      port: port
+      port: port,
+      nats_host: nats_host,
+      nats_port: nats_port
     )
   end
 

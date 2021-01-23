@@ -8,14 +8,19 @@ module Chimera
     # The Game::Server fronts the TCP access to the game and manages
     # communication between the player and the game world.
     class Instance
-      attr_reader :started
+      attr_accessor :started
 
       include Logging
       include Ractor::Common
       include Nats::Common
 
-      def self.start(host:, port:)
-        new(host, port).start
+      def self.start(host:, port:, nats_host:, nats_port:)
+        new(
+          host: host,
+          port: port,
+          nats_host: nats_host,
+          nats_port: nats_port
+        ).start
       end
 
       def initialize(host: "localhost", port: "2323", **args)
@@ -28,31 +33,31 @@ module Chimera
       end
 
       def start
-        ensure_nats_connection
-        start_server
-
-        @started = true
-        until @stopped
-          sock = pipe.take
-
-          create_logging_ractor(sock) do |logger, socket|
-            socket.logger = logger
-            socket.start
-          end
+        Signal.trap("SIGINT") do
+          stop
         end
 
-        @started = false
+        ensure_nats_connection
+        start_server
+        start_listener
+        puts "listener started"
+        self.started = true
+      end
+
+      def run
+        start
+        ::Ractor.select(listener)
       end
 
       def stop
-        @stopped = false
+        pipe << :stop
       end
 
       private
 
       # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
       def start_server
-        Rails.logger.info("creating server on tcp://#{host}:#{port}")
+        logger.info("creating server on tcp://#{host}:#{port}")
         create_logging_ractor(pipe, host, port) do |logger, pipe, host, port|
           logger.debug("starting server")
           server = TCPServer.open(host, port)
@@ -66,7 +71,22 @@ module Chimera
       end
       # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 
-      attr_reader :pipe, :host, :port, :handlers
+      def start_listener
+        @listener = create_logging_ractor(pipe) do |logger, p|
+          loop do
+            sock = p.take
+
+            break if sock == :stop
+
+            ::Ractor.new(logger, sock) do |l, socket|
+              socket.logger = l
+              socket.start
+            end
+          end
+        end
+      end
+
+      attr_reader :pipe, :host, :port, :listener
     end
   end
 end
