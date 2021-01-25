@@ -1,12 +1,7 @@
 {
-  "folders": [
+	"folders": [
     {
-      "path": "./"
-    },
-  ],
-  "settings": {
-    "ruby.rubocop.configFilePath": "/root/workspace/chimera/.rubocop.yml",
-    "ruby.useLanguageServer": true,
-    "ruby.rubocop.executePath": "/usr/local/bin/"
-  }
+      "path": "."
+    }
+  ]
 }
