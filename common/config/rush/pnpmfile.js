@@ -27,14 +27,12 @@ module.exports = {
  * The return value is the updated object.
  */
 function readPackage(packageJson, context) {
-  // schema-utils (dependency of webpack-dev-server) has an unfulfilled peer dependency
-  if (packageJson.name === 'schema-utils') {
-    if (!packageJson.dependencies) {
-      packageJson.dependencies = {};
-    }
 
-    packageJson.dependencies['ajv'] = '~6.12.5';
-  }
+  // // The karma types have a missing dependency on typings from the log4js package.
+  // if (packageJson.name === '@types/karma') {
+  //  context.log('Fixed up dependencies for @types/karma');
+  //  packageJson.dependencies['log4js'] = '0.6.38';
+  // }
 
   return packageJson;
 }

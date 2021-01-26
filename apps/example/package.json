@@ -1,0 +1,22 @@
+{
+  "name": "@chimera-mud/example",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.ts",
+  "scripts": {
+    "build": "heft build",
+    "watch": "heft build --watch",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "~4.1.3",
+    "@rushstack/heft": "~0.24.1",
+    "@types/node": "~14.14.22",
+    "@rushstack/heft-node-rig": "~0.2.3",
+    "@types/heft-jest": "~1.0.2",
+    "@types/eslint": "~7.2.6",
+    "@types/semver": "~7.3.4"
+  }
+}
