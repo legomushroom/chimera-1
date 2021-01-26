@@ -1,0 +1,17 @@
+{
+  "name": "chimera-mud",
+  "version": "0.1.0",
+  "description": "Chimera MUD Engine",
+  "main": "index.js",
+  "repository": "https://github.com/chimera-mud/chimera",
+  "author": "fugufish",
+  "license": "MIT",
+  "devDependencies": {
+    "lerna": "^3.22.1"
+  },
+  "dependencies": {
+    "@chimera/example": "file:packages/chimera-example",
+    "@chimera/server": "file:packages/chimera-server",
+    "@chimera/core": "file:packages/chimera-core"
+  }
+}

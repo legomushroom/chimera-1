@@ -9,3 +9,6 @@
 .byebug_history
 .env.*.local
 /coverage/**
+*.log
+node_modules/**
+packages/**/node_modules/**

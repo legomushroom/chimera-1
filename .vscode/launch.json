@@ -5,10 +5,10 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "RSpec - active spec file only",
-      "type": "Ruby",
+      "name": "Server",
+      "type": "node",
       "request": "launch",
-      "program": "${workspaceRoot}/bin/rspec",
+      "program": "${workspaceRoot}/packages/chimera-example/config/server.config.js",
       "args": [
         "-I",
         "${workspaceRoot}",
