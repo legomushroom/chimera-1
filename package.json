@@ -5,13 +5,16 @@
   "main": "index.js",
   "repository": "https://github.com/chimera-mud/chimera",
   "author": "fugufish",
-  "license": "MIT",
+  "license": "ICS",
   "devDependencies": {
     "lerna": "^3.22.1"
   },
   "dependencies": {
     "@chimera/example": "file:packages/chimera-example",
     "@chimera/server": "file:packages/chimera-server",
-    "@chimera/core": "file:packages/chimera-core"
+    "@chimera/core": "file:packages/chimera-core",
+    "chai": "^3.5.0",
+    "gulp": "^3.9.1",
+    "@microsoft/node-library-build": "~0.2.2"
   }
 }

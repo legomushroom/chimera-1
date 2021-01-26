@@ -1,0 +1,33 @@
+{
+  "program": {
+    "fileInfos": {},
+    "options": {
+      "outDir": "../../lib",
+      "rootDirs": [
+        "../../src"
+      ],
+      "forceConsistentCasingInFileNames": true,
+      "declaration": true,
+      "sourceMap": true,
+      "declarationMap": true,
+      "inlineSources": true,
+      "experimentalDecorators": true,
+      "strict": true,
+      "esModuleInterop": true,
+      "types": [
+        "node"
+      ],
+      "module": 1,
+      "target": 4,
+      "lib": [
+        "lib.es2017.d.ts"
+      ],
+      "incremental": true,
+      "tsBuildInfoFile": "./ts_f9db94541b1f86cf3e101f140dc242a41bd595bb.json"
+    },
+    "referencedMap": {},
+    "exportedModulesMap": {},
+    "semanticDiagnosticsPerFile": []
+  },
+  "version": "4.1.3"
+}
