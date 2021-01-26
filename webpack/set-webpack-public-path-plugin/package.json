@@ -1,0 +1,37 @@
+{
+  "name": "@rushstack/set-webpack-public-path-plugin",
+  "version": "3.2.7",
+  "description": "This plugin sets the webpack public path at runtime.",
+  "main": "lib/index.js",
+  "typings": "lib/index.d.ts",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/microsoft/rushstack/tree/master/webpack/set-webpack-public-path-plugin"
+  },
+  "scripts": {
+    "build": "heft build --clean"
+  },
+  "dependencies": {
+    "lodash": "~4.17.15"
+  },
+  "peerDependencies": {
+    "@types/webpack": "^4.39.8"
+  },
+  "peerDependenciesMeta": {
+    "@types/webpack": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@rushstack/eslint-config": "workspace:*",
+    "@rushstack/heft": "workspace:*",
+    "@rushstack/heft-node-rig": "workspace:*",
+    "@types/heft-jest": "1.0.1",
+    "@types/lodash": "4.14.116",
+    "@types/node": "10.17.13",
+    "@types/tapable": "1.0.6",
+    "@types/uglify-js": "2.6.29",
+    "@types/webpack": "4.41.24"
+  }
+}
