@@ -3,12 +3,14 @@ import { Service, ServiceBroker} from "moleculer";
 import { Config } from "./Config";
 
 export abstract class Process {
-  static readonly config: Config = new Config();
-  readonly config: Config;
+  protected static readonly config: Config;
+
+  get config(): Config {
+    return (this.constructor as any).config
+  }
   broker!: ServiceBroker;
 
   constructor() {
-    this.config = (this.constructor as any).config
     this.config.moleculer.started = this.started;
     this.config.moleculer.stopped = this.stopped;
   }
