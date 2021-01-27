@@ -21,6 +21,7 @@
     "@types/semver": "~7.3.4"
   },
   "dependencies": {
-    "@chimera-mud/core": "~0.1.0"
+    "@chimera-mud/core": "~0.1.0",
+    "@chimera-mud/server": "~0.1.0"
   }
 }

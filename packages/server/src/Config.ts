@@ -1,7 +1,7 @@
-import Core from "@chimera-mud/core"
+import { Config as CoreConfig } from "@chimera-mud/core"
 import { Telnet } from "./config/Telnet"
 
-export class Config extends Core.Config {
+export class Config extends CoreConfig {
   telnet: Telnet;
 
   constructor() {

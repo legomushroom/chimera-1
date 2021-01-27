@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "description": "Chimera MUD Server",
   "typings": "lib/index.d.ts",
-  "main": "lib/index.ts",
+  "main": "lib/index.js",
   "scripts": {
     "build": "heft build",
     "watch": "heft build --watch",
