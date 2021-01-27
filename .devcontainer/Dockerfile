@@ -21,7 +21,7 @@ RUN if [ "$USER_GID" != "1000" ] || [ "$USER_UID" != "1000" ]; then \
   fi
 
 
-RUN npm install --global pnpm heft @microsoft/rush @microsoft/api-extractor
+RUN npm install --global pnpm @rushstack/heft lerna
 # [Optional] Uncomment this section to install additional OS packages.
 # RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
 #     && apt-get -y install --no-install-recommends <your-package-list-here>
