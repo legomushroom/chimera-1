@@ -2,6 +2,9 @@
 ARG VARIANT=12
 FROM mcr.microsoft.com/vscode/devcontainers/javascript-node:${VARIANT}
 
+RUN apt-get update -y
+RUN apt-get upgrade -y
+
 # Install MongoDB command line tools
 ARG MONGO_TOOLS_VERSION=4.2
 RUN curl -sSL "https://www.mongodb.org/static/pgp/server-${MONGO_TOOLS_VERSION}.asc" | (OUT=$(apt-key add - 2>&1) || echo $OUT) \
@@ -21,7 +24,7 @@ RUN if [ "$USER_GID" != "1000" ] || [ "$USER_UID" != "1000" ]; then \
   fi
 
 
-RUN npm install --global pnpm @rushstack/heft lerna
+RUN npm install --global pnpm @rushstack/heft @rushstack/heft-node-rig lerna
 # [Optional] Uncomment this section to install additional OS packages.
 # RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
 #     && apt-get -y install --no-install-recommends <your-package-list-here>
