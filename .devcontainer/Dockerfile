@@ -25,7 +25,7 @@ RUN if [ "$USER_GID" != "1000" ] || [ "$USER_UID" != "1000" ]; then \
   fi
 
 
-RUN npm install --global pnpm @rushstack/heft @rushstack/heft-node-rig lerna
+RUN npm install --global --unsafe-perm pnpm @rushstack/heft @rushstack/heft-node-rig lerna
 # [Optional] Uncomment this section to install additional OS packages.
 # RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
 #     && apt-get -y install --no-install-recommends <your-package-list-here>
