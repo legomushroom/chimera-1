@@ -5,4 +5,8 @@ import { Config } from "./Config"
 
 export class Server extends Process {
   static readonly config: Config = new Config();
+
+  started(_: ServiceBroker): void {
+    console.log("started")
+  }
 }

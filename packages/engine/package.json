@@ -23,6 +23,7 @@
   "dependencies": {
     "@chimera-mud/core": "~0.1.0",
     "@chimera-mud/server": "~0.1.0",
-    "moleculer": "^0.14.12"
+    "moleculer": "^0.14.12",
+    "nats": "^1.4.12"
   }
 }
