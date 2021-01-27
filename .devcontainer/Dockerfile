@@ -4,6 +4,7 @@ FROM mcr.microsoft.com/vscode/devcontainers/javascript-node:${VARIANT}
 
 RUN apt-get update -y
 RUN apt-get upgrade -y
+RUN apt-get install gcc g++ build-essential -y
 
 # Install MongoDB command line tools
 ARG MONGO_TOOLS_VERSION=4.2
