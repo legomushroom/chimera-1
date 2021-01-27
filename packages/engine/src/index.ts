@@ -1,4 +1,4 @@
-import { Server } from "@chimera-mud/server";
+import { Server, Config as ServerConfig } from "@chimera-mud/server";
 
 export * from "./Engine";
-export { Server };
+export { Server, ServerConfig };

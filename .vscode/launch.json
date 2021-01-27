@@ -11,7 +11,7 @@
       "skipFiles": [
         "<node_internals>/**"
       ],
-      "program": "./apps/example/lib/config/server.config.js"
+      "program": "./packages/example/lib/config/server.config.js"
     }
   ]
 }
