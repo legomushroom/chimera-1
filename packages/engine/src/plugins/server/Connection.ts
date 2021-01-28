@@ -28,7 +28,7 @@ export default class Connection extends Service {
   }
 
   handle(buffer: Buffer) {
-    console.log(buffer)
+    this.logger.info(`received ${buffer.length} bytes`)
   }
 
 }

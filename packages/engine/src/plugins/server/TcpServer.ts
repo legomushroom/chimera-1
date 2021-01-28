@@ -19,7 +19,6 @@ export default class TcpServer {
         netServer.on("connection", (socket) => {
           broker.logger.info("received connection")
           const connection = new Connection(socket);
-          console.log(connection.__toMoleculerSchema());
           Engine.createService(connection)
         })
 

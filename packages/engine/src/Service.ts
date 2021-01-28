@@ -1,4 +1,5 @@
 import { ServiceMethods, ServiceSchema, ServiceSettingSchema } from "moleculer"
+import Promise from "bluebird";
 
 interface IObject extends Object {
   [index: string]: any
@@ -31,6 +32,7 @@ function getMethods(obj: IObject): Function[] {
   .filter(item => typeof obj[<string>item] === "function")
   .filter(item => !METHOD_BLACKLIST.has(<string>item))
   .filter(item => !(<string>item).match(/^__/))
+  .map(item => obj[<string>item]);
 }
 
 export default abstract class Service {
@@ -39,18 +41,24 @@ export default abstract class Service {
 
   [name: string]: any;
 
+  created(): void {}
+  started(): Promise<void> {
+    return Promise.resolve()
+  }
+
   __toMoleculerSchema(): ServiceSchema {
     return {
       name: this.name,
-      methods: this.__getMethods()
+      methods: this.__getMethods(),
+      created: this.created,
+      started: this.started,
+      settings: this.settings
     }
   }
 
   private __getMethods(): ServiceMethods {
     const methods: ServiceMethods = {}
-    getMethods(this).forEach(m => {
-      methods[m.name] = <(...args: any[]) => any>m
-      );
+    getMethods(this).forEach(m => methods[m.name] = <(...args: any[]) => any>m);
 
     return methods
   }
