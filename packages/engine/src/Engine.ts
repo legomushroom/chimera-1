@@ -3,6 +3,8 @@ import config from "config"
 
 import Plugin  from "./Plugin"
 import Server from "./plugins/server/Server";
+import { ServiceBroker } from "moleculer";
+import Service from "./Service";
 
 interface IPluginList {
   [index: string]: Plugin
@@ -21,6 +23,11 @@ export default class Engine {
   static readonly command: yargs.Argv = yargs(process.argv.slice(2))
   static readonly plugins: IPluginList = {};
   static readonly config: config.IConfig = config;
+  static broker: ServiceBroker;
+
+  static createService(service: Service) {
+    this.broker.createService(service.__toMoleculerSchema())
+  }
 
   static registerPlugins(plugins: Plugin[]): void {
     plugins.forEach(plugin => this.registerPlugin(plugin))

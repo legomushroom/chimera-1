@@ -11,11 +11,12 @@
       "skipFiles": [
         "<node_internals>/**"
       ],
-      "program": "./packages/cli/lib/index.js",
+      "program": "${workspaceFolder}/packages/engine/bin/chimera",
       "args": [
         "server",
         "start"
-      ]
+      ],
+      "cwd":"${workspaceFolder}/packages/example"
     }
   ]
 }
