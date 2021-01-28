@@ -21,6 +21,9 @@ const METHOD_BLACKLIST = new Set([
   "started"
 ])
 
+/**
+ * Recursively extracts methods from a given objects tree
+**/
 function getMethods(obj: IObject): Function[] {
   let properties = new Set()
   let currentObj = obj
@@ -35,6 +38,10 @@ function getMethods(obj: IObject): Function[] {
   .map(item => obj[<string>item]);
 }
 
+
+/**
+ * Extend this class to create new services
+**/
 export default abstract class Service {
   name!: string
   settings!: ServiceSettingSchema;

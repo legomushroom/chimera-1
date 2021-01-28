@@ -1,4 +1,3 @@
-import Engine from "../../Engine";
 import Plugin from "../../Plugin";
 
 export default class Server extends Plugin {
@@ -10,6 +9,5 @@ export default class Server extends Plugin {
     }
   }
 
-  load(): void {
-  }
+  load(): void {}
 }

@@ -17,6 +17,20 @@
         "start"
       ],
       "cwd":"${workspaceFolder}/packages/example"
+    },
+    {
+      "type": "pwa-node",
+      "request": "launch",
+      "name": "World",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "program": "${workspaceFolder}/packages/engine/bin/chimera",
+      "args": [
+        "world",
+        "start"
+      ],
+      "cwd":"${workspaceFolder}/packages/example"
     }
   ]
 }

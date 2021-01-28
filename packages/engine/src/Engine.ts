@@ -3,6 +3,7 @@ import config from "config"
 
 import Plugin  from "./Plugin"
 import Server from "./plugins/server/Server";
+import World from "./plugins/world/World";
 import { ServiceBroker } from "moleculer";
 import Service from "./Service";
 
@@ -43,6 +44,7 @@ export default class Engine {
     this.config = DEFAULT_CONFIG;
     Engine.registerPlugins([
       new Server(),
+      new World()
     ])
   }
 
