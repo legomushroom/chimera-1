@@ -1,6 +1,6 @@
 import "reflect-metadata"
 
-import { ServiceMethods, ServiceSchema, ServiceSettingSchema, EventSchema, ActionHandler, ServiceEvent } from "moleculer"
+import { ServiceMethods, ServiceSchema, ServiceSettingSchema, EventSchema, ActionHandler, ServiceEvent, ServiceEvents } from "moleculer"
 import Promise from "bluebird";
 
 interface IObject extends Object {
@@ -53,12 +53,17 @@ function getMethods(obj: IObject, events: IEventList): ServiceMethods {
 }
 
 function getEvents(obj: IObject): IEventList {
+  const events: IEventList = {}
   return Reflect.getMetadata(EVENT_METADATA_KEY, obj.__proto__)
 }
 
 function getSchema(obj: IObject): ServiceSchema {
-  const events = getEvents(obj)
-  const methods = getMethods(obj, events)
+  const rawEvents = getEvents(obj)
+  const methods = getMethods(obj, rawEvents)
+
+  const events: ServiceEvents = {}
+
+  Object.values(rawEvents).forEach(event => events[<string>event.name] = event)
 
   return {
     name: obj.name,
@@ -91,16 +96,16 @@ export abstract class Service {
   }
 }
 
-export function event(name?: string | EventSchema, options?: EventSchema): MethodDecorator {
+export function event(name?: string | ServiceEvent, options?: EventSchema): MethodDecorator {
   return <T>(target: Object, propertyKey: string | Symbol, descriptor: TypedPropertyDescriptor<T>) => {
     let schema: ServiceEvent = {
       name: propertyKey.toString()
     };
 
     if (name && typeof name === "string") {
-      schema.name;
-    } else if (name) {
-      schema = <EventSchema>name;
+      schema.name = name;
+    } else if (name && typeof name !== "string") {
+      schema = <ServiceEvent>name;
     } else if (options) {
       schema = options
     }
@@ -109,7 +114,7 @@ export function event(name?: string | EventSchema, options?: EventSchema): Metho
 
     const events = Reflect.getMetadata(EVENT_METADATA_KEY, target) || {}
 
-    events[<string>schema.name] = schema
+    events[propertyKey.toString()] = schema
 
     Reflect.defineMetadata(EVENT_METADATA_KEY, events, target)
   }
