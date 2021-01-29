@@ -27,7 +27,7 @@ export default class Connection extends Service {
   }
 
   started(): Promise<void> {
-    return this.emit("connections.created", this.settings.uuid)
+    return this.emit("connections.started", this.settings.uuid)
   }
 
   handle(buffer: Buffer) {
