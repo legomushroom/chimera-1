@@ -1,4 +1,4 @@
-import Service from "../../Service";
+import { Service } from "../../Service";
 import net from "net";
 import { v4 as uuidV4 } from "uuid";
 

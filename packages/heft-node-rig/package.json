@@ -1,0 +1,32 @@
+{
+  "name": "@chimera-mud/heft-node-rig",
+  "version": "0.1.0",
+  "description": "> TODO: description",
+  "author": "Jarod Reid <jarod@solidalchemy.com>",
+  "homepage": "https://github.com/chimera-mud/chimera#readme",
+  "license": "ISC",
+  "main": "lib/heft-node-rig.js",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chimera-mud/chimera.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "bugs": {
+    "url": "https://github.com/chimera-mud/chimera/issues"
+  },
+  "dependencies": {
+    "@rushstack/heft-node-rig": "~0.2.3"
+  },
+  "devDependencies": {
+    "@rushstack/heft-node-rig": "^0.2.3"
+  }
+}

@@ -8,7 +8,7 @@ import Plugin  from "./Plugin"
 import Server from "./plugins/server/Server";
 import World from "./plugins/world/World";
 import { BrokerOptions, ServiceBroker, Service as MoleculerService } from "moleculer";
-import Service from "./Service";
+import { Service } from "./Service";
 import Manager from "./Manager";
 
 interface IPluginList {
@@ -21,7 +21,8 @@ interface IDefaultConfig {
 
 const DEFAULT_CONFIG: IDefaultConfig = {
   moleculer: {
-    transporter: "nats://127.0.0.1:4222"
+    transporter: "nats://127.0.0.1:4222",
+    logLevel: "debug"
   }
 }
 export default class Engine {

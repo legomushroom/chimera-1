@@ -4,8 +4,9 @@ import Promise from "bluebird";
 
 import Engine from "../../../../Engine";
 import Manager from "../../../../Manager";
+import { event } from "../../../../Service";
 import Connection from "../../Connection";
-import { Service } from "moleculer";
+import { Service  } from "moleculer";
 
 interface IConnectionList {
   [index: string]: Service
@@ -14,6 +15,11 @@ interface IConnectionList {
 export default class ConnectionManager extends Manager {
   readonly name = "connection-manager";
   readonly connections: IConnectionList = {}
+
+
+  @event()
+  sessionStarted() {
+  }
 
   created() {
     const url = new URL(<string>Engine.config.get("server.telnet.url"));

@@ -11,8 +11,9 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@chimera-mud/heft-node-rig": "^0.1.0",
     "@rushstack/heft": "~0.24.1",
-    "@rushstack/heft-node-rig": "~0.2.3",
+    "@rushstack/heft-node-rig": "^0.2.3",
     "@types/eslint": "~7.2.6",
     "@types/heft-jest": "~1.0.2",
     "@types/node": "~14.14.22",

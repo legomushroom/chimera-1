@@ -1,8 +1,14 @@
-import { ServiceMethods, ServiceSchema, ServiceSettingSchema } from "moleculer"
+import "reflect-metadata"
+
+import { ServiceMethods, ServiceSchema, ServiceSettingSchema, EventSchema, ActionHandler, ServiceEvent } from "moleculer"
 import Promise from "bluebird";
 
 interface IObject extends Object {
   [index: string]: any
+}
+
+interface IEventList {
+  [index: string]: ServiceEvent
 }
 
 const METHOD_BLACKLIST = new Set([
@@ -21,28 +27,54 @@ const METHOD_BLACKLIST = new Set([
   "started"
 ])
 
+const EVENT_METADATA_KEY = Symbol("events");
+
 /**
  * Recursively extracts methods from a given objects tree
 **/
-function getMethods(obj: IObject): Function[] {
+function getMethods(obj: IObject, events: IEventList): ServiceMethods {
   let properties = new Set()
   let currentObj = obj
+  let eventList = new Set(Object.keys(events))
   do {
     Object.getOwnPropertyNames(currentObj).map(item => properties.add(item))
   } while ((currentObj = Object.getPrototypeOf(currentObj)))
 
-  return <Function[]> [...properties.keys()]
-  .filter(item => typeof obj[<string>item] === "function")
-  .filter(item => !METHOD_BLACKLIST.has(<string>item))
-  .filter(item => !(<string>item).match(/^__/))
-  .map(item => obj[<string>item]);
+  const methods: ServiceMethods = {};
+
+  [...properties.keys()]
+    .filter(item => typeof obj[<string>item] === "function")
+    .filter(item => !METHOD_BLACKLIST.has(<string>item))
+    .filter(item => !eventList.has(<string>item))
+    .filter(item => !(<string>item).match(/^__/))
+    .forEach(item => methods[<string>item] = obj[<string>item])
+
+  return methods
+}
+
+function getEvents(obj: IObject): IEventList {
+  return Reflect.getMetadata(EVENT_METADATA_KEY, obj.__proto__)
+}
+
+function getSchema(obj: IObject): ServiceSchema {
+  const events = getEvents(obj)
+  const methods = getMethods(obj, events)
+
+  return {
+    name: obj.name,
+    settings: obj.settings || {},
+    created: obj.created,
+    started: obj.started,
+    events,
+    methods
+  }
 }
 
 
 /**
  * Extend this class to create new services
 **/
-export default abstract class Service {
+export abstract class Service {
   name!: string
   settings!: ServiceSettingSchema;
 
@@ -54,19 +86,31 @@ export default abstract class Service {
   }
 
   __toMoleculerSchema(): ServiceSchema {
-    return {
-      name: this.name,
-      methods: this.__getMethods(),
-      created: this.created,
-      started: this.started,
-      settings: this.settings
-    }
+    const schema = getSchema(this);
+    return schema
   }
+}
 
-  private __getMethods(): ServiceMethods {
-    const methods: ServiceMethods = {}
-    getMethods(this).forEach(m => methods[m.name] = <(...args: any[]) => any>m);
+export function event(name?: string | EventSchema, options?: EventSchema): MethodDecorator {
+  return <T>(target: Object, propertyKey: string | Symbol, descriptor: TypedPropertyDescriptor<T>) => {
+    let schema: ServiceEvent = {
+      name: propertyKey.toString()
+    };
 
-    return methods
+    if (name && typeof name === "string") {
+      schema.name;
+    } else if (name) {
+      schema = <EventSchema>name;
+    } else if (options) {
+      schema = options
+    }
+
+    schema.handler = <ActionHandler<any>><unknown>descriptor.value;
+
+    const events = Reflect.getMetadata(EVENT_METADATA_KEY, target) || {}
+
+    events[<string>schema.name] = schema
+
+    Reflect.defineMetadata(EVENT_METADATA_KEY, events, target)
   }
 }
