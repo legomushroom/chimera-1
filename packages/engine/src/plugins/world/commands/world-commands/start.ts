@@ -1,10 +1,9 @@
-import Instance from "../../Instance";
+import Engine from "../../../../Engine"
 
 module.exports = {
   command: "start",
   desc: "starts the Chimera MUD world instance",
   handler: function() {
-    const instance = new Instance();
-    instance.start();
+    Engine.startBroker("word")
   }
 }

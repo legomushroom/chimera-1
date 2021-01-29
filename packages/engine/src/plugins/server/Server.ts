@@ -8,6 +8,4 @@ export default class Server extends Plugin {
       url: "tcp://127.0.0.1:2324"
     }
   }
-
-  load(): void {}
 }

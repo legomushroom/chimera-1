@@ -1,6 +1,4 @@
 #!/usr/bin/env node
 
 const Engine = new require('../lib/Engine').default;
-const engine = new Engine();
-
-engine.start();
+Engine.bootstrap().argv();

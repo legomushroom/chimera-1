@@ -1,11 +1,15 @@
 import yargs from "yargs"
 import config from "config"
+import path from "path"
+import glob from "glob"
+import fs from "fs"
 
 import Plugin  from "./Plugin"
 import Server from "./plugins/server/Server";
 import World from "./plugins/world/World";
-import { ServiceBroker } from "moleculer";
+import { BrokerOptions, ServiceBroker } from "moleculer";
 import Service from "./Service";
+import Manager from "./Manager";
 
 interface IPluginList {
   [index: string]: Plugin
@@ -30,6 +34,21 @@ export default class Engine {
     this.broker.createService(service.__toMoleculerSchema())
   }
 
+  static bootstrap(): typeof Engine {
+    this.registerPlugins([
+      new Server(),
+      new World()
+    ])
+    this.loadPlugins();
+    this.loadConfig();
+
+    return this
+  }
+
+  static argv() {
+    this.command.demandCommand().argv;
+  }
+
   static registerPlugins(plugins: Plugin[]): void {
     plugins.forEach(plugin => this.registerPlugin(plugin))
   }
@@ -38,32 +57,45 @@ export default class Engine {
     this.plugins[plugin.id] = plugin
   }
 
-  config: object;
-
-  constructor() {
-    this.config = DEFAULT_CONFIG;
-    Engine.registerPlugins([
-      new Server(),
-      new World()
-    ])
+  static startBroker(name: string, options: BrokerOptions = {}) {
+    this.bootstrap()
+    this.broker = new ServiceBroker({
+      nodeID: `chimera-${name}`,
+      ...config.get("moleculer"),
+      ...options
+    })
+    this.broker.start()
+      .then(() => {
+      })
   }
 
-  start() {
-    this.loadConfig();
-    this.loadPlugins();
-    Engine.command.demandCommand().argv;
+  static loadManagersInDir(dir: string) {
+
   }
 
-  private loadPlugins(): void {
-    Object.values(Engine.plugins).forEach((plugin) => {
-      Engine.config.util.setModuleDefaults(plugin.id, plugin.config)
-      plugin._load()
+  private static loadCommands(plugin: Plugin) {
+    const dir = path.join(plugin.pluginDir, "commands")
+    if (fs.existsSync(dir)) {
+      this.command.commandDir(dir)
+    }
+  }
+
+  private static loadConfig() {
+    Object.keys(DEFAULT_CONFIG)
+    .forEach(
+      (key) => this.config.util.setModuleDefaults(<string>key, DEFAULT_CONFIG[<string>key])
+     )
+  }
+
+  private static loadPlugins(): void {
+    Object.values(this.plugins).forEach((plugin) => {
+      this.loadPlugin(plugin)
     });
   }
 
-  private loadConfig() {
-    Object.keys(DEFAULT_CONFIG).forEach((key) => {
-      Engine.config.util.setModuleDefaults(key, DEFAULT_CONFIG[key])
-    })
+  private static loadPlugin(plugin: Plugin) {
+    this.config.util.setModuleDefaults(plugin.id, plugin.config)
+    this.loadCommands(plugin)
+    plugin._load();
   }
 }
