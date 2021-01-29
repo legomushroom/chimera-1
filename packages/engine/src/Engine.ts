@@ -7,7 +7,7 @@ import fs from "fs"
 import Plugin  from "./Plugin"
 import Server from "./plugins/server/Server";
 import World from "./plugins/world/World";
-import { BrokerOptions, ServiceBroker } from "moleculer";
+import { BrokerOptions, ServiceBroker, Service as MoleculerService } from "moleculer";
 import Service from "./Service";
 import Manager from "./Manager";
 
@@ -30,8 +30,8 @@ export default class Engine {
   static readonly config: config.IConfig = config;
   static broker: ServiceBroker;
 
-  static createService(service: Service) {
-    this.broker.createService(service.__toMoleculerSchema())
+  static createService(service: Service): MoleculerService {
+    return this.broker.createService(service.__toMoleculerSchema())
   }
 
   static bootstrap(): typeof Engine {

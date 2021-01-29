@@ -5,9 +5,15 @@ import Promise from "bluebird";
 import Engine from "../../../../Engine";
 import Manager from "../../../../Manager";
 import Connection from "../../Connection";
+import { Service } from "moleculer";
+
+interface IConnectionList {
+  [index: string]: Service
+}
 
 export default class ConnectionManager extends Manager {
-  name = "connection-manager";
+  readonly name = "connection-manager";
+  readonly connections: IConnectionList = {}
 
   created() {
     const url = new URL(<string>Engine.config.get("server.telnet.url"));
@@ -22,7 +28,7 @@ export default class ConnectionManager extends Manager {
     this.netServer.on("connection", (socket: net.Socket) => {
       this.broker.logger.info("received connection")
       const connection = new Connection(socket);
-      Engine.createService(connection)
+      this.connections[connection.id] = Engine.createService(connection)
     })
   }
 

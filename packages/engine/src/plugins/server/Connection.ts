@@ -7,17 +7,19 @@ import Promise from "bluebird";
 import Engine from "../../Engine";
 
 export default class Connection extends Service {
+  readonly id: string;
+
   constructor(socket: net.Socket) {
     super()
-    const uuid = uuidV4();
+    this.id = uuidV4();
 
-    this.name = `server.connections.${uuid}`;
+    this.name = `server.connections.${this.id}`;
 
     this.settings = {
       socket: socket,
       $secureSettings: ["socket"],
       remoteAddress: socket.remoteAddress,
-      uuid
+      uuid: this.id
     }
   }
 
