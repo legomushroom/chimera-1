@@ -2,10 +2,6 @@ import { Service } from "../../Service";
 import net from "net";
 import { v4 as uuidV4 } from "uuid";
 
-import Promise from "bluebird";
-
-import Engine from "../../Engine";
-
 export default class Connection extends Service {
   readonly id: string;
 
