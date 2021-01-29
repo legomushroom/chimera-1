@@ -1,6 +1,6 @@
 import "reflect-metadata"
 
-import { ServiceMethods, ServiceSchema, ServiceSettingSchema, EventSchema, ActionHandler, ServiceEvent, ServiceEvents } from "moleculer"
+import { ServiceMethods, ServiceSchema, ServiceSettingSchema, EventSchema, ActionHandler, ServiceEvent, ServiceEvents, Service as MoleculerService, ServiceBroker } from "moleculer"
 import Promise from "bluebird";
 
 interface IObject extends Object {
@@ -11,7 +11,11 @@ interface IEventList {
   [index: string]: ServiceEvent
 }
 
-const METHOD_BLACKLIST = new Set([
+interface IPropList {
+  [index: string]: any
+}
+
+const PROPERTY_BLACKLIST = new Set([
   "constructor",
   "__defineGetter__",
   "__defineSetter__",
@@ -24,7 +28,9 @@ const METHOD_BLACKLIST = new Set([
   "valueOf",
   "toLocaleString",
   "created",
-  "started"
+  "started",
+  "publish",
+  "name"
 ])
 
 const EVENT_METADATA_KEY = Symbol("events");
@@ -35,7 +41,7 @@ const EVENT_METADATA_KEY = Symbol("events");
 function getMethods(obj: IObject, events: IEventList): ServiceMethods {
   let properties = new Set()
   let currentObj = obj
-  let eventList = new Set(Object.keys(events))
+  let eventList = new Set(Object.keys(events || {}))
   do {
     Object.getOwnPropertyNames(currentObj).map(item => properties.add(item))
   } while ((currentObj = Object.getPrototypeOf(currentObj)))
@@ -44,7 +50,7 @@ function getMethods(obj: IObject, events: IEventList): ServiceMethods {
 
   [...properties.keys()]
     .filter(item => typeof obj[<string>item] === "function")
-    .filter(item => !METHOD_BLACKLIST.has(<string>item))
+    .filter(item => !PROPERTY_BLACKLIST.has(<string>item))
     .filter(item => !eventList.has(<string>item))
     .filter(item => !(<string>item).match(/^__/))
     .forEach(item => methods[<string>item] = obj[<string>item])
@@ -57,18 +63,39 @@ function getEvents(obj: IObject): IEventList {
   return Reflect.getMetadata(EVENT_METADATA_KEY, obj.__proto__)
 }
 
+function getProperties(obj: IObject): IPropList {
+   let properties = new Set()
+  let currentObj = obj
+  do {
+    Object.getOwnPropertyNames(currentObj).map(item => properties.add(item))
+  } while ((currentObj = Object.getPrototypeOf(currentObj)))
+
+  let final: IPropList = {};
+
+  [...properties.keys()]
+    .filter(item => typeof obj[<string>item] !== "function")
+    .filter(item => !PROPERTY_BLACKLIST.has(<string>item))
+    .filter(item => !(<string>item).match(/^__/))
+    .forEach(item => final[<string>item] = obj[<string>item])
+
+  return final
+}
+
 function getSchema(obj: IObject): ServiceSchema {
-  const rawEvents = getEvents(obj)
+  const rawEvents = getEvents(obj) || {}
   const methods = getMethods(obj, rawEvents)
 
   const events: ServiceEvents = {}
 
   Object.values(rawEvents).forEach(event => events[<string>event.name] = event)
 
+  const props = getProperties(obj);
+
+
   return {
     name: obj.name,
     settings: obj.settings || {},
-    created: obj.created,
+    created: obj.__created(props),
     started: obj.started,
     events,
     methods
@@ -82,6 +109,7 @@ function getSchema(obj: IObject): ServiceSchema {
 export abstract class Service {
   name!: string
   settings!: ServiceSettingSchema;
+  broker!: ServiceBroker;
 
   [name: string]: any;
 
@@ -90,9 +118,21 @@ export abstract class Service {
     return Promise.resolve()
   }
 
+  emit<D>(eventName: string, data: D, groupsOrOpts?: any): Promise<void> {
+    return <Promise<void>>this.broker.emit(eventName, data, groupsOrOpts)
+  }
+
   __toMoleculerSchema(): ServiceSchema {
     const schema = getSchema(this);
     return schema
+  }
+
+  __created(props: IPropList) {
+    const created = this.created
+    return function(this: MoleculerService) {
+      Object.keys(props).forEach(prop => this[prop] = props[prop])
+      created.bind(this)()
+    }
   }
 }
 
