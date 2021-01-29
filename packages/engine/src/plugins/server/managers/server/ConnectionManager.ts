@@ -1,5 +1,6 @@
 import { URL } from "url"
 import net from "net"
+import Promise from "bluebird";
 
 import Engine from "../../../../Engine";
 import Manager from "../../../../Manager";
@@ -14,11 +15,20 @@ export default class ConnectionManager extends Manager {
     this.settings.port = url.port
     this.netServer = net.createServer();
 
-    this.netServer.on("listening", ()=> this.broker.logger.info("waiting for new connections"))
+    this.netServer.on("listening", ()=> {
+      this.broker.logger.info("waiting for new connections")
+    })
+
     this.netServer.on("connection", (socket: net.Socket) => {
       this.broker.logger.info("received connection")
       const connection = new Connection(socket);
       Engine.createService(connection)
     })
+  }
+
+  started(): Promise<void> {
+    this.netServer.listen(this.settings.port, this.settings.hostname)
+
+    return Promise.resolve();
   }
 }

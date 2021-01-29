@@ -23,6 +23,7 @@ export default abstract class Plugin {
   private loadManagers() {
     const dir = path.join(this.pluginDir, "managers")
     if (fs.existsSync(dir)) {
+      console.log(path.join(dir, this.id))
       this.loadManagersInDir(dir)
       this.loadManagersInDir(path.join(dir, this.id))
     }

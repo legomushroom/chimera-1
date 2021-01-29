@@ -66,6 +66,9 @@ export default class Engine {
     })
     this.broker.start()
       .then(() => {
+        Object.values(this.plugins[name].managers).forEach((manager) => {
+          this.broker.createService(manager.__toMoleculerSchema())
+        })
       })
   }
 
