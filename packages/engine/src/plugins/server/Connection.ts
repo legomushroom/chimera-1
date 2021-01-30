@@ -16,7 +16,7 @@ export default class Connection extends Service {
       socket: socket,
       $secureSettings: ["socket"],
       remoteAddress: socket.remoteAddress,
-      uuid: this.id
+      id: this.id
     }
   }
 
@@ -27,11 +27,11 @@ export default class Connection extends Service {
   }
 
   started(): Promise<void> {
-    return this.emit("connections.started", this.settings.uuid)
+    return this.emit("connections.started", this.settings.id)
   }
 
   handle(buffer: Buffer) {
-    this.logger.info(`received ${buffer.length} bytes`)
+    this.emit(`connections.input.${this.settings.id}`, buffer.toString())
   }
 
 }

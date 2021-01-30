@@ -7,9 +7,7 @@ export class Session extends Service {
     this.name = `world.sessions.${id}`
   }
 
-  @event((svc) => {
-    return `connections.input.${svc.settings.id}`
-  })
+  @event((svc) => `connections.input.${svc.settings.id}`)
   handleInput(input: string) {
     console.log(input)
   }
