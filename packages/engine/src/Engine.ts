@@ -1,15 +1,19 @@
 import yargs from "yargs"
 import config from "config"
 import path from "path"
-import glob from "glob"
 import fs from "fs"
+import dotenv from "dotenv"
 
+import Config from "./Config"
 import Plugin  from "./Plugin"
 import Server from "./plugins/server/Server";
 import World from "./plugins/world/World";
 import { BrokerOptions, ServiceBroker, Service as MoleculerService } from "moleculer";
 import { Service } from "./Service";
-import Manager from "./Manager";
+
+const result = dotenv.config();
+
+console.log(result)
 
 interface IPluginList {
   [index: string]: Plugin
@@ -19,16 +23,10 @@ interface IDefaultConfig {
   [index: string]: Object
 }
 
-const DEFAULT_CONFIG: IDefaultConfig = {
-  moleculer: {
-    transporter: "nats://127.0.0.1:4222",
-    logLevel: "debug"
-  }
-}
 export default class Engine {
   static readonly command: yargs.Argv = yargs(process.argv.slice(2))
   static readonly plugins: IPluginList = {};
-  static readonly config: config.IConfig = config;
+  static readonly config: Config = new Config();
   static broker: ServiceBroker;
 
   static createService(service: Service): MoleculerService {
@@ -41,7 +39,6 @@ export default class Engine {
       new World()
     ])
     this.loadPlugins();
-    this.loadConfig();
 
     return this
   }
@@ -84,13 +81,6 @@ export default class Engine {
     }
   }
 
-  private static loadConfig() {
-    Object.keys(DEFAULT_CONFIG)
-    .forEach(
-      (key) => this.config.util.setModuleDefaults(<string>key, DEFAULT_CONFIG[<string>key])
-     )
-  }
-
   private static loadPlugins(): void {
     Object.values(this.plugins).forEach((plugin) => {
       this.loadPlugin(plugin)
@@ -98,7 +88,6 @@ export default class Engine {
   }
 
   private static loadPlugin(plugin: Plugin) {
-    this.config.util.setModuleDefaults(plugin.id, plugin.config)
     this.loadCommands(plugin)
     plugin._load();
   }

@@ -1,6 +1,8 @@
 import { Service as MoleculerService } from "moleculer";
-import Engine from "../../../../Engine";
+import DbService from "moleculer-db";
+import MoleculerDBAdapter from "moleculer-db-adapter-mongo";
 
+import Engine from "../../../../Engine";
 import Manager from "../../../../Manager"
 import { event } from "../../../../Service"
 import { Session } from "../../Session";
@@ -11,6 +13,10 @@ interface ISessionList {
 
 export default class SessionManager extends Manager {
   name = "world.session-manager"
+  collection = "sessions"
+  mixins = [DbService]
+  adapter = new MoleculerDBAdapter(Engine.config.get("world.mongo.url"))
+
   readonly sessions: ISessionList = {}
 
   @event("connections.started")

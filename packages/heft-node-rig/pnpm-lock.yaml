@@ -1,5 +1,10 @@
 dependencies:
   '@rushstack/heft-node-rig': 0.2.3
+  dotenv: 8.2.0
+  underscore.string: 3.3.5
+devDependencies:
+  '@types/dotenv': 8.2.0
+  '@types/underscore.string': 0.0.38
 lockfileVersion: 5.2
 packages:
   /@babel/code-frame/7.12.11:
@@ -110,10 +115,27 @@ packages:
     dev: false
     resolution:
       integrity: sha512-ebDJ9b0e702Yr7pWgB0jzm+CX4Srzz8RcXtLJDJB+BSccqMa36uyH/zUsSYao5+BD1ytv3k3rPYCq4mAE1hsXA==
+  /@types/dotenv/8.2.0:
+    dependencies:
+      dotenv: 8.2.0
+    deprecated: This is a stub types definition. dotenv provides its own type definitions, so you do not need this installed.
+    dev: true
+    resolution:
+      integrity: sha512-ylSC9GhfRH7m1EUXBXofhgx4lUWmFeQDINW5oLuS+gxWdfUeW4zJdeVTYVkexEW+e2VUvlZR2kGnGGipAWR7kw==
   /@types/node/10.17.13:
     dev: false
     resolution:
       integrity: sha512-pMCcqU2zT4TjqYFrWtYHKal7Sl30Ims6ulZ4UFXxI4xbtQqK/qqKwkDoBFCfooRqqmRu9vY3xaJRwxSh673aYg==
+  /@types/underscore.string/0.0.38:
+    dependencies:
+      '@types/underscore': 1.10.24
+    dev: true
+    resolution:
+      integrity: sha512-QPMttDInBYkulH/3nON0KnYpEd/RlyE5kUrhuts5d76B/stpjXpDticq+iTluoAsVnVXuGECFhPtuX+aDJdx+A==
+  /@types/underscore/1.10.24:
+    dev: true
+    resolution:
+      integrity: sha512-T3NQD8hXNW2sRsSbLNjF/aBo18MyJlbw0lSpQHB/eZZtScPdexN4HSa8cByYwTw9Wy7KuOFr81mlDQcQQaZ79w==
   /acorn-jsx/5.3.1_acorn@7.4.1:
     dependencies:
       acorn: 7.4.1
@@ -292,6 +314,11 @@ packages:
       node: '>=6.0.0'
     resolution:
       integrity: sha512-yS+Q5i3hBf7GBkd4KG8a7eBNNWNGLTaEwwYWUijIYM7zrlYDM0BFXHjjPWlWZ1Rg7UaddZeIDmi9jF3HmqiQ2w==
+  /dotenv/8.2.0:
+    engines:
+      node: '>=8'
+    resolution:
+      integrity: sha512-8sJ78ElpbDJBHNeBzUbUVLsqKdccaa/BXF1uPTw3GrvQTBgrQrtObr2mUrE38vzYd8cEv+m/JBfDLioYcfXoaw==
   /emoji-regex/7.0.3:
     dev: false
     resolution:
@@ -906,6 +933,13 @@ packages:
     hasBin: true
     resolution:
       integrity: sha512-B3ZIOf1IKeH2ixgHhj6la6xdwR9QrLC5d1VKeCSY4tvkqhF2eqd9O7txNlS0PO3GrBAFIdr3L1ndNwteUbZLYg==
+  /underscore.string/3.3.5:
+    dependencies:
+      sprintf-js: 1.0.3
+      util-deprecate: 1.0.2
+    dev: false
+    resolution:
+      integrity: sha512-g+dpmgn+XBneLmXXo+sGlW5xQEt4ErkS3mgeN2GFbremYeMBSJKr9Wf2KJplQVaiPY/f7FN6atosWYNm9ovrYg==
   /universalify/0.1.2:
     dev: false
     engines:
@@ -918,6 +952,10 @@ packages:
     dev: false
     resolution:
       integrity: sha512-7rKUyy33Q1yc98pQ1DAmLtwX109F7TIfWlW1Ydo8Wl1ii1SeHieeh0HHfPeL2fMXK6z0s8ecKs9frCuLJvndBg==
+  /util-deprecate/1.0.2:
+    dev: false
+    resolution:
+      integrity: sha1-RQ1Nyfpw3nMnYvvS1KKJgUGaDM8=
   /v8-compile-cache/2.2.0:
     dev: false
     resolution:
@@ -972,3 +1010,7 @@ packages:
       integrity: sha512-DUOKC/IhbkdLKKiV89gw9DUauTV8U/8yJl1sjf6MtDmzevLKOF2duNJ495S3MFVjqZarr+qNGCPbkg4mu4PpLw==
 specifiers:
   '@rushstack/heft-node-rig': ~0.2.3
+  '@types/dotenv': ^8.2.0
+  '@types/underscore.string': ^0.0.38
+  dotenv: ^8.2.0
+  underscore.string: ^3.3.5

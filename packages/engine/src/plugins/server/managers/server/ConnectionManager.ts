@@ -17,7 +17,7 @@ export default class ConnectionManager extends Manager {
   readonly connections: IConnectionList = {}
 
   created() {
-    const url = new URL(<string>Engine.config.get("server.telnet.url"));
+    const url = new URL(Engine.config.get("server.telnet.url") || "tcp://127.0.0.1:2323");
     this.settings.hostname = url.hostname;
     this.settings.port = url.port
     this.netServer = net.createServer();

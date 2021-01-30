@@ -2,7 +2,6 @@ import fs from "fs";
 import path from "path";
 import glob from "glob"
 
-import Engine from "./Engine"
 import Manager from "./Manager"
 
 interface IManagerList {
@@ -13,7 +12,6 @@ export default abstract class Plugin {
   readonly managers: IManagerList = {}
 
   abstract readonly id: string;
-  abstract readonly config: object;
   abstract readonly pluginDir: string;
 
   _load() {
@@ -23,7 +21,6 @@ export default abstract class Plugin {
   private loadManagers() {
     const dir = path.join(this.pluginDir, "managers")
     if (fs.existsSync(dir)) {
-      console.log(path.join(dir, this.id))
       this.loadManagersInDir(dir)
       this.loadManagersInDir(path.join(dir, this.id))
     }
