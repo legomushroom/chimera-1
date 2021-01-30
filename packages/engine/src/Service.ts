@@ -8,12 +8,18 @@ interface IObject extends Object {
 }
 
 interface IEventList {
-  [index: string]: ServiceEvent
+  [index: string]: IServiceEvent
 }
 
 interface IPropList {
   [index: string]: any
 }
+
+interface IServiceEvent extends ServiceEvent {
+  name?: any
+}
+
+type TEventNamingFunction = (o: IObject) => string
 
 const PROPERTY_BLACKLIST = new Set([
   "constructor",
@@ -87,10 +93,18 @@ function getSchema(obj: IObject): ServiceSchema {
 
   const events: ServiceEvents = {}
 
-  Object.values(rawEvents).forEach(event => events[<string>event.name] = event)
+  Object.values(rawEvents).forEach((event) => {
+    let name;
+    if (typeof event.name == "function") {
+      name = event.name(obj)
+    } else {
+      name = event.name
+    }
+    event.name = name
+    events[<string>name] = event
+  })
 
   const props = getProperties(obj);
-
 
   return {
     name: obj.name,
@@ -108,7 +122,7 @@ function getSchema(obj: IObject): ServiceSchema {
 **/
 export abstract class Service {
   name!: string
-  settings!: ServiceSettingSchema;
+  settings: ServiceSettingSchema = {};
   broker!: ServiceBroker;
 
   [name: string]: any;
@@ -136,14 +150,16 @@ export abstract class Service {
   }
 }
 
-export function event(name?: string | ServiceEvent, options?: EventSchema): MethodDecorator {
+export function event(name?: string | ServiceEvent | TEventNamingFunction, options?: ServiceEvent): MethodDecorator {
   return <T>(target: Object, propertyKey: string | Symbol, descriptor: TypedPropertyDescriptor<T>) => {
-    let schema: ServiceEvent = {
+    let schema: IServiceEvent = {
       name: propertyKey.toString()
     };
 
     if (name && typeof name === "string") {
       schema.name = name;
+    } else if (name && typeof name === "function") {
+      schema.name = name
     } else if (name && typeof name !== "string") {
       schema = <ServiceEvent>name;
     } else if (options) {
