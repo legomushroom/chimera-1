@@ -1,6 +1,17 @@
 import "reflect-metadata"
 
-import { ServiceMethods, ServiceSchema, ServiceSettingSchema, EventSchema, ActionHandler, ServiceEvent, ServiceEvents, Service as MoleculerService, ServiceBroker, ServiceAction, GenericObject } from "moleculer"
+import {
+  ServiceMethods,
+  ServiceSchema,
+  ServiceSettingSchema,
+  ActionHandler,
+  ServiceEvent,
+  ServiceEvents,
+  Service as MoleculerService,
+  ServiceBroker,
+  ServiceActionsSchema,
+  ActionSchema
+} from "moleculer"
 import Promise from "bluebird";
 
 interface IObject extends Object {
@@ -16,6 +27,10 @@ interface IPropList {
 }
 
 interface IServiceEvent extends ServiceEvent {
+  name?: any
+}
+
+interface IActionSchema extends ActionSchema {
   name?: any
 }
 
@@ -47,10 +62,12 @@ const ACTION_METADATA_KEY = Symbol("actions");
 /**
  * Recursively extracts methods from a given objects tree
 **/
-function getMethods(obj: IObject, events: IEventList): ServiceMethods {
+function getMethods(obj: IObject, events: IEventList, actions: IActionSchema): ServiceMethods {
   let properties = new Set()
   let currentObj = obj
   let eventList = new Set(Object.keys(events || {}))
+  let actionList = new Set(Object.keys(actions || {}))
+
   do {
     Object.getOwnPropertyNames(currentObj).map(item => properties.add(item))
   } while ((currentObj = Object.getPrototypeOf(currentObj)))
@@ -61,6 +78,7 @@ function getMethods(obj: IObject, events: IEventList): ServiceMethods {
     .filter(item => typeof obj[<string>item] === "function")
     .filter(item => !PROPERTY_BLACKLIST.has(<string>item))
     .filter(item => !eventList.has(<string>item))
+    .filter(item => !actionList.has(<string>item))
     .filter(item => !(<string>item).match(/^__/))
     .forEach(item => methods[<string>item] = obj[<string>item])
 
@@ -68,8 +86,11 @@ function getMethods(obj: IObject, events: IEventList): ServiceMethods {
 }
 
 function getEvents(obj: IObject): IEventList {
-  const events: IEventList = {}
   return Reflect.getMetadata(EVENT_METADATA_KEY, obj.__proto__)
+}
+
+function getActions(obj: IObject): IActionSchema[] {
+  return Reflect.getMetadata(ACTION_METADATA_KEY, obj.__proto__)
 }
 
 function getProperties(obj: IObject): IPropList {
@@ -92,9 +113,12 @@ function getProperties(obj: IObject): IPropList {
 
 function getSchema(obj: Service): ServiceSchema {
   const rawEvents = getEvents(obj) || {}
-  const methods = getMethods(obj, rawEvents)
+  const rawActions = getActions(obj) || {}
+
+  const methods = getMethods(obj, rawEvents, rawActions)
 
   const events: ServiceEvents = {}
+  const actions: ServiceActionsSchema = {}
 
   Object.values(rawEvents).forEach((event) => {
     let name;
@@ -105,6 +129,18 @@ function getSchema(obj: Service): ServiceSchema {
     }
     event.name = name
     events[<string>name] = event
+  })
+
+  Object.values(rawActions).forEach((action) => {
+    let name;
+    if (typeof action.name == "function") {
+      name = action.name(obj)
+    } else {
+      name = action.name
+    }
+    action.name = name
+    actions[<string>name] = action
+
   })
 
   const props = getProperties(obj);
@@ -126,7 +162,8 @@ function getSchema(obj: Service): ServiceSchema {
     started: obj.started,
     events,
     methods,
-    mixins
+    mixins,
+    actions
   }
 }
 
@@ -191,17 +228,18 @@ export function event(name?: string | ServiceEvent | TNamingFunction, options?: 
   }
 }
 
-export function action(name?: string | TNamingFunction, options?: ServiceAction): MethodDecorator {
+export function action(name?: string | TNamingFunction, options?: ActionSchema): MethodDecorator {
   return <T>(target: Object, propertyKey: string | Symbol, descriptor: TypedPropertyDescriptor<T>) => {
-    if (!name) {
-      name = propertyKey.toString()
-    }
-
-    let schema: GenericObject = {};
+    let schema: ActionSchema = {};
     if (options) {
       schema = options
     }
 
+    if (!name) {
+      name = propertyKey.toString()
+    } else if (typeof name == "string") {
+      schema.name = name
+    }
 
     schema.handler = <ActionHandler<any>><unknown>descriptor.value;
 
