@@ -5,6 +5,7 @@
   "main": "index.ts",
   "scripts": {
     "build": "heft build",
+    "clean": "heft clean",
     "watch": "heft build --watch",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

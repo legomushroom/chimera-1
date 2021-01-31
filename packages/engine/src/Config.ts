@@ -6,7 +6,7 @@ dotenv.config()
 export default class Config {
   [index: string]: Function
 
-  get(path: string): string | undefined {
+  get(path: string): any {
     if (this[path]) {
       return this[path]()
     }

@@ -1,5 +1,4 @@
 import yargs from "yargs"
-import config from "config"
 import path from "path"
 import fs from "fs"
 import dotenv from "dotenv"
@@ -59,7 +58,7 @@ export default class Engine {
     this.bootstrap()
     this.broker = new ServiceBroker({
       nodeID: `chimera-${name}`,
-      ...config.get("moleculer"),
+      ...<BrokerOptions>this.config.get("moleculer"),
       ...options
     })
     this.broker.start()

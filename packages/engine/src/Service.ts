@@ -1,6 +1,6 @@
 import "reflect-metadata"
 
-import { ServiceMethods, ServiceSchema, ServiceSettingSchema, EventSchema, ActionHandler, ServiceEvent, ServiceEvents, Service as MoleculerService, ServiceBroker } from "moleculer"
+import { ServiceMethods, ServiceSchema, ServiceSettingSchema, EventSchema, ActionHandler, ServiceEvent, ServiceEvents, Service as MoleculerService, ServiceBroker, ServiceAction, GenericObject } from "moleculer"
 import Promise from "bluebird";
 
 interface IObject extends Object {
@@ -19,7 +19,7 @@ interface IServiceEvent extends ServiceEvent {
   name?: any
 }
 
-type TEventNamingFunction = (o: IObject) => string
+type TNamingFunction = (o: IObject) => string
 
 const PROPERTY_BLACKLIST = new Set([
   "constructor",
@@ -36,10 +36,13 @@ const PROPERTY_BLACKLIST = new Set([
   "created",
   "started",
   "publish",
-  "name"
+  "name",
+  "mixins",
+  "settings"
 ])
 
 const EVENT_METADATA_KEY = Symbol("events");
+const ACTION_METADATA_KEY = Symbol("actions");
 
 /**
  * Recursively extracts methods from a given objects tree
@@ -87,7 +90,7 @@ function getProperties(obj: IObject): IPropList {
   return final
 }
 
-function getSchema(obj: IObject): ServiceSchema {
+function getSchema(obj: Service): ServiceSchema {
   const rawEvents = getEvents(obj) || {}
   const methods = getMethods(obj, rawEvents)
 
@@ -106,13 +109,24 @@ function getSchema(obj: IObject): ServiceSchema {
 
   const props = getProperties(obj);
 
+  const mixins: ServiceSchema[] = [];
+
+  obj.mixins.forEach((mixin) => {
+    if (mixin instanceof Service) {
+      mixins.push(mixin.__toMoleculerSchema())
+    } else {
+      mixins.push(mixin)
+    }
+  })
+
   return {
     name: obj.name,
     settings: obj.settings || {},
     created: obj.__created(props),
     started: obj.started,
     events,
-    methods
+    methods,
+    mixins
   }
 }
 
@@ -124,6 +138,7 @@ export abstract class Service {
   name!: string
   settings: ServiceSettingSchema = {};
   broker!: ServiceBroker;
+  mixins: (ServiceSchema | Service)[] = [];
 
   [name: string]: any;
 
@@ -150,7 +165,7 @@ export abstract class Service {
   }
 }
 
-export function event(name?: string | ServiceEvent | TEventNamingFunction, options?: ServiceEvent): MethodDecorator {
+export function event(name?: string | ServiceEvent | TNamingFunction, options?: ServiceEvent): MethodDecorator {
   return <T>(target: Object, propertyKey: string | Symbol, descriptor: TypedPropertyDescriptor<T>) => {
     let schema: IServiceEvent = {
       name: propertyKey.toString()
@@ -173,5 +188,27 @@ export function event(name?: string | ServiceEvent | TEventNamingFunction, optio
     events[propertyKey.toString()] = schema
 
     Reflect.defineMetadata(EVENT_METADATA_KEY, events, target)
+  }
+}
+
+export function action(name?: string | TNamingFunction, options?: ServiceAction): MethodDecorator {
+  return <T>(target: Object, propertyKey: string | Symbol, descriptor: TypedPropertyDescriptor<T>) => {
+    if (!name) {
+      name = propertyKey.toString()
+    }
+
+    let schema: GenericObject = {};
+    if (options) {
+      schema = options
+    }
+
+
+    schema.handler = <ActionHandler<any>><unknown>descriptor.value;
+
+    const actions = Reflect.getMetadata(ACTION_METADATA_KEY, target) || {}
+
+    actions[propertyKey.toString()] = schema
+
+    Reflect.defineMetadata(ACTION_METADATA_KEY, actions, target)
   }
 }
