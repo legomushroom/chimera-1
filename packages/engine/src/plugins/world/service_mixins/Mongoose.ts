@@ -35,4 +35,9 @@ export default class Mongoose extends Service {
       })
     })
   }
+
+  @action("create")
+  create(ctx: Context): Promise<any> {
+    return <Promise<any>> this.model?.create(<any>ctx.params)
+  }
 }

@@ -24,13 +24,17 @@ export default class SessionManager extends Manager {
   createSession(id: string) {
     this.logger.debug("received conenction event, checking to see if session was already registered")
     this.actions.find({uuid: id})
-    .then((model: Model<any>) => console.log(model))
-    // this.logger.debug(`new connection received with id '${id}', waiting for ready`)
-    const connecitonName = `server.connections.${id}`
-    // this.broker.waitForServices(connecitonName)
-      // .then(() => {
-        // this.sessions[id] = Engine.createService(new Session(id))
-      // })
+    .then((model: any) => {
+      if (!model) {
+        this.logger.debug("session not found, creating new session")
+        return this.actions.create({uuid: id})
+      }
+
+      this.logger.debug("session found")
+      return model
+    })
+    .then((model: any) => {
+    })
   }
 
   created() {
