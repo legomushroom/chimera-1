@@ -1,16 +1,16 @@
 # frozen_string_literal: true
 
-require "chimera_mud/core/version"
 require "chimera_mud/core/engine"
 require "chimera_mud/core/logging"
 require "chimera_mud/core/nats"
 require "chimera_mud/core/ractor"
+require "chimera_mud/core/plugin"
 
 module ChimeraMud
   module Core
     def self.start(_name)
+      require(File.join(Dir.pwd, "config", "environment.rb"))
       puts "Chimera MUD Engine"
-      puts "   Application Root"
       logger.info("loading plugins")
       Plugin.plugins.each do |plugin|
         logger.info("  loading #{plugin.name}")
@@ -19,7 +19,7 @@ module ChimeraMud
     end
 
     def self.logger
-      Rails.logger
+      Logger.new($stdout)
     end
   end
 end

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Chimera
+module ChimeraMud
   module Core
     class Plugin
       def self.plugins
@@ -9,7 +9,7 @@ module Chimera
 
       def self.inherited(child)
         super
-        @plugins << child
+        plugins << child
       end
     end
   end

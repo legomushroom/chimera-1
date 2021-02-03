@@ -2,7 +2,7 @@
 
 module ChimeraMud
   module Server
-    class Plugin < ChimeraMud::Core::Game
+    class Plugin < ChimeraMud::Core::Plugin
     end
   end
 end
