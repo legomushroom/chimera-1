@@ -2,7 +2,7 @@
 
 require "nats/io/client"
 
-require "chimera/core/nats/common"
+require "chimera_mud/core/nats/common"
 
 module Chimera
   module Core

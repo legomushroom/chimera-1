@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-require_relative "lib/chimera_mud/version"
+version = File.read(File.expand_path("./CHIMERA_VERSION", __dir__)).strip
 
 Gem::Specification.new do |spec|
   spec.name = "chimera_mud"
   spec.required_ruby_version = "~> 3.0"
-  spec.version     = ChimeraMud::VERSION
+  spec.version     = version
   spec.authors     = ["Jarod Reid"]
   spec.email       = ["jarod@solidalchemy.com"]
   spec.homepage    = "https://github.com/chimera-mud/chimera"
@@ -17,6 +17,7 @@ Gem::Specification.new do |spec|
 
   spec.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
 
-  spec.add_dependency "pg", "~> 1.2"
+  spec.add_dependency "chimera_mud-core", version
+  spec.add_dependency "chimera_mud-server", version
   spec.add_dependency "rails", "~> 6.1"
 end

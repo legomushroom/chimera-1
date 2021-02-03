@@ -1,3 +1,3 @@
 # frozen_string_literal: true
 
-require "chimera/core/ractor/common"
+require "chimera_mud/core/ractor/common"

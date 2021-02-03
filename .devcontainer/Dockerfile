@@ -4,7 +4,7 @@
 FROM rubylang/ruby:3.0.0-focal
 
 RUN apt-get update
-RUN apt-get install -y byobu libsqlite3-dev sqlite3
+RUN apt-get install -y byobu libsqlite3-dev sqlite3 nodejs npm
 RUN bash -c "$(curl -fsSL https://raw.githubusercontent.com/ohmybash/oh-my-bash/master/tools/install.sh)"
 RUN gem install rubocop
 RUN gem install solargraph
