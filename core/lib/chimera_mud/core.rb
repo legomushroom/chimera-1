@@ -8,13 +8,24 @@ require "chimera_mud/core/plugin"
 
 module ChimeraMud
   module Core
-    def self.start(_name)
+    def self.instantiated_plugins
+      @instantiated_plugins ||= Set.new
+    end
+
+    def self.managers
+      @managers ||= {}
+    end
+
+    def self.start(name)
       require(File.join(Dir.pwd, "config", "environment.rb"))
-      puts "Chimera MUD Engine"
+      puts "Chimera MUD Engine - #{name}"
       logger.info("loading plugins")
-      Plugin.plugins.each do |plugin|
+      Plugin.descendants.each do |plugin|
         logger.info("  loading #{plugin.name}")
-        plugin.new
+        instantiated_plugins << p = plugin.new
+        p.load_managers_for(name).each do |manager|
+          managers[manager.name] = manager
+        end
       end
     end
 

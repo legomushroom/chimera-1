@@ -8,7 +8,7 @@ module ChimeraMud
   # :nodoc:
   class ServerCommand < Rails::Command::Base
     def start
-      ChimeraMud::Core.start("Server")
+      ChimeraMud::Core.start(ChimeraMud::Server)
     end
   end
 end
