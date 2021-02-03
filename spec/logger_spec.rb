@@ -2,10 +2,10 @@
 
 require "rails_helper"
 
-RSpec.describe Chimera::Logging do
+RSpec.describe ChimeraMudLogging do
   subject do
     Class.new do
-      include Chimera::Logging
+      include ChimeraMudLogging
     end.new
   end
 

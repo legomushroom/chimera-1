@@ -1,8 +1,7 @@
 PATH
   remote: .
   specs:
-    chimera (0.1.0)
-      nats-pure (~> 0.6.2)
+    chimera_mud (0.1.0)
       pg (~> 1.2)
       rails (~> 6.1)
 
@@ -108,7 +107,6 @@ GEM
     mini_mime (1.0.2)
     mini_portile2 (2.5.0)
     minitest (5.14.3)
-    nats-pure (0.6.2)
     nio4r (2.5.4)
     nokogiri (1.11.1)
       mini_portile2 (~> 2.5.0)
@@ -241,7 +239,7 @@ PLATFORMS
 
 DEPENDENCIES
   byebug
-  chimera!
+  chimera_mud!
   debase
   dotenv-rails
   pry-byebug

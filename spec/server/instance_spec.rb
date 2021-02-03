@@ -4,7 +4,7 @@ require "rails_helper"
 
 require "chimera/server"
 
-RSpec.describe Chimera::Server::Instance do
+RSpec.describe ChimeraMudServer::Instance do
   before :all do
     @server = described_class.new(port: "3232")
     @server.start

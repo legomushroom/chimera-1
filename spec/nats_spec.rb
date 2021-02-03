@@ -3,7 +3,7 @@
 require "rails_helper"
 require "chimera/nats"
 
-RSpec.describe Chimera::Nats do
+RSpec.describe ChimeraMudNats do
   describe "#ensure_connection" do
     let(:client) { double(NATS::IO::Client) }
 

@@ -3,10 +3,10 @@
 require "rails_helper"
 require "chimera/nats"
 
-RSpec.describe Chimera::Nats::Common do
+RSpec.describe ChimeraMudNats::Common do
   subject do
     Class.new do
-      include Chimera::Nats::Common
+      include ChimeraMudNats::Common
 
       # rubocop:disable Lint/UselessMethodDefinition
       def ensure_nats_connection
@@ -18,7 +18,7 @@ RSpec.describe Chimera::Nats::Common do
 
   describe "#ensure_nats_connection" do
     it "calls Nats::ensure_connection" do
-      expect(Chimera::Nats).to receive(:ensure_connection)
+      expect(ChimeraMudNats).to receive(:ensure_connection)
         .with("localhost", "4222")
         .and_return(true)
 
