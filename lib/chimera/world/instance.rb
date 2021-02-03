@@ -1,16 +1,16 @@
 # frozen_string_literal: true
 
+require "chimera/instance"
+
 module Chimera
   module World
-    ##
-    # The instance of the game world.
-    class Instance
-      include Nats::Common
-      include Ractor::Common
-      include Logging
+    class Instance < Chimera::Instance
+      private
 
-      def start
-        ensure_nats_connection
+      def _start; end
+
+      def _wait
+        sleep 1 while started
       end
     end
   end

@@ -1,28 +1,13 @@
 # frozen_string_literal: true
 
-require "singleton"
+require "chimera/instance"
 
 module Chimera
   module Server
     ##
     # The Game::Server fronts the TCP access to the game and manages
     # communication between the player and the game world.
-    class Instance
-      attr_accessor :started
-
-      include Logging
-      include Ractor::Common
-      include Nats::Common
-
-      def self.run(host:, port:, nats_host:, nats_port:)
-        new(
-          host: host,
-          port: port,
-          nats_host: nats_host,
-          nats_port: nats_port
-        ).run
-      end
-
+    class Instance < Chimera::Instance
       def initialize(host: "localhost", port: "2323", **args)
         super(**args)
         @host = host
@@ -30,7 +15,6 @@ module Chimera
         @handlers = []
 
         @pipe = create_pipe
-        @shutdown = create_pipe
       end
 
       def start
@@ -101,7 +85,7 @@ module Chimera
       end
       # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 
-      attr_reader :pipe, :host, :port, :listener, :shutdown
+      attr_reader :pipe, :host, :port, :listener
     end
   end
 end
