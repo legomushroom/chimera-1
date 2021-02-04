@@ -1,15 +1,10 @@
-# See here for image contents: https://github.com/microsoft/vscode-dev-containers/tree/v0.145.1/containers/ubuntu/.devcontainer/base.Dockerfile
+FROM mcr.microsoft.com/vscode/devcontainers/ruby:3
 
-# [Choice] Ubuntu version: bionic, focal
-FROM rubylang/ruby:3.0.0-focal
+# Install Rails
+RUN gem install rails webdrivers 
 
-RUN apt-get update
-RUN apt-get install -y byobu libsqlite3-dev sqlite3 nodejs npm
-RUN bash -c "$(curl -fsSL https://raw.githubusercontent.com/ohmybash/oh-my-bash/master/tools/install.sh)"
-RUN gem install rubocop
-RUN gem install solargraph
-
-
+ARG NODE_VERSION="lts/*"
+RUN su vscode -c "source /usr/local/share/nvm/nvm.sh && nvm install ${NODE_VERSION} 2>&1"
 # [Optional] Uncomment this section to install additional OS packages.
 # RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
 #     && apt-get -y install --no-install-recommends <your-package-list-here>
