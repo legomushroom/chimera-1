@@ -2,7 +2,7 @@
 
 require "active_support/concern"
 
-module Chimera
+module ChimeraMud
   module Core
     ##
     # Adds the logger method. Useful for things that use RactorCommon

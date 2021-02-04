@@ -4,7 +4,7 @@ require "nats/io/client"
 
 require "chimera_mud/core/nats/common"
 
-module Chimera
+module ChimeraMud
   module Core
     # @nodoc
     module Nats

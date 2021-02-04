@@ -1,12 +1,15 @@
 {
   "folders": [
-    {
-      "path": "./"
-    },
-  ],
+	{
+		"path": "."
+	},
+	{
+		"path": "../fos"
+	}
+],
+  "remoteAuthority": "vsonline+e78aa376-fe2c-4b0a-8210-218e2413b52b+accountProvider=GitHub",
   "settings": {
-    "ruby.rubocop.configFilePath": "/root/workspace/chimera/.rubocop.yml",
-    "ruby.useLanguageServer": true,
-    "ruby.rubocop.executePath": "/usr/local/bin/"
+    "ruby.codeCompletion": "rcodetools",
+    "ruby.intellisense": "rubyLocate"
   }
 }

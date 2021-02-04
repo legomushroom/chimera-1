@@ -5,6 +5,7 @@
 module ChimeraMud
   module Core
     class Plugin
+      include Logging
       class << self
         attr_accessor :root
 
@@ -26,18 +27,26 @@ module ChimeraMud
         def find_root(path)
           dirs = path.split("/")
           dirs.reduce("/") do |p, dir|
-            return p if File.exist?(File.join(p, "Gemfile")) &&
-                        !File.exist?(File.join(p, "chimera_mud.gemspec"))
+            if File.exist?(File.join(p, "Gemfile")) &&
+               !File.exist?(File.join(p, "chimera_mud.gemspec"))
+              return p
+            end
 
             File.join(p, dir)
           end
         end
+
+        def cannonical_name
+          File.basename(name.underscore)
+        end
       end
 
-      def load_managers_for(plugin_namespace)
-        plugin = plugin_namespace.const_get(:Plugin)
-        puts plugin.root
-        []
+      attr_accessor :managers
+
+      delegate :cannonical_name, to: :class
+
+      def initialize
+        @managers = PathResolver.new(self, "managers", "*_manager.rb")
       end
     end
   end

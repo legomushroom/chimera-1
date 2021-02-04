@@ -5,14 +5,13 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "RSpec - active spec file only",
+      "name": "Chimera Server",
       "type": "Ruby",
       "request": "launch",
-      "program": "${workspaceRoot}/bin/rspec",
+      "program": "${workspaceRoot}/../fos/bin/rails",
+      "cwd": "${workspaceRoot}/../fos",
       "args": [
-        "-I",
-        "${workspaceRoot}",
-        "${file}"
+        "chimera_mud:server:start"
       ]
     }
   ]

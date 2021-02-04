@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Chimera
+module ChimeraMud
   module Core
     module Ractor
       ##

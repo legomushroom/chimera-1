@@ -2,7 +2,7 @@
 
 require "active_support/concern"
 
-module Chimera
+module ChimeraMud
   module Core
     module Nats
       ##
