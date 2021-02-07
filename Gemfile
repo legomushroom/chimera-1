@@ -21,4 +21,5 @@ group :development, :test do
   gem "simplecov"
   gem "solargraph"
   gem "sqlite3"
+  gem "timecop"
 end

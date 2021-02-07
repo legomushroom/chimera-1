@@ -13,10 +13,14 @@ module ChimeraMud
       end
 
       def call(severity, time, _progname, msg)
-        return "#{severity}, [#{time} ##{$$}] - <#{tag}}> -- #{msg}" if tag
+        return "#{severity}, [#{time} ##{$$}] - <#{tag}> -- #{msg}\n" if tag
 
-        "#{severity}, [#{time} ##{$$}] -- #{msg}"
+        "#{severity}, [#{time} ##{$$}] -- #{msg}\n"
       end
+
+      private
+
+      attr_reader :tag
     end
   end
 end

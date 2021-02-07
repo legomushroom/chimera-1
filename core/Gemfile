@@ -9,6 +9,7 @@ gemspec
 group :development do
   gem "rubocop"
   gem "sqlite3"
+  gem "timecop"
 end
 
 # To use a debugger
