@@ -15,7 +15,7 @@ module ChimeraMud
       def initialize(tag)
         super(log_file)
         @tag = tag
-        self.level = log_level
+        self.formatter = Formatter.new(tag)
       end
 
       private
