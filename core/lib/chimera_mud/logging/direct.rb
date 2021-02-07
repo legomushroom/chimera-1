@@ -32,6 +32,13 @@ module ChimeraMud
           @logger ||= TaggedLogger.new(log_tag)
         end
       end
+
+      ##
+      # @return [TaggedLogger] the log instance for the instance of the class.
+      # Note: the log instance will be different than the class's log instance
+      def logger
+        @logger ||= TaggedLogger.new(self.class.log_tag)
+      end
     end
   end
 end
