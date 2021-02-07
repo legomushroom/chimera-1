@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative "boot"
 
 require "rails/all"
@@ -5,7 +7,8 @@ require "rails/all"
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
-require "chimera_mud/core"
+
+require "chimera_mud"
 
 module Dummy
   class Application < Rails::Application
@@ -20,3 +23,5 @@ module Dummy
     # config.eager_load_paths << Rails.root.join("extras")
   end
 end
+
+require_relative "chimera"
