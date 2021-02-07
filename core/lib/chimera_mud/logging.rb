@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require "chimera_mud/logging/direct"
 require "chimera_mud/logging/tagged_logger"
 
 module ChimeraMud

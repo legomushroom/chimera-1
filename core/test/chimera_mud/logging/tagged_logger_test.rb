@@ -8,15 +8,15 @@ module ChimeraMud
       def test_logger_sets_formatter
         logger = TaggedLogger.new("test")
 
-        assert_equal logger.formatter.class, Formatter
-        assert_equal logger.tag, "test"
+        assert_instance_of Formatter, logger.formatter
+        assert_equal "test", logger.tag
       end
 
       def test_tagged_logger
         logger = TaggedLogger.new("test")
         sub = logger.tagged_logger("test")
 
-        assert_equal sub.tag, "test.test"
+        assert_equal "test.test", sub.tag
       end
     end
   end

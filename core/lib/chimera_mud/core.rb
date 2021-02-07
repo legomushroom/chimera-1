@@ -1,15 +1,7 @@
 # frozen_string_literal: true
 
 require "chimera_mud/logging"
-
-require "chimera_mud/core/engine"
-require "chimera_mud/core/path_resolver"
-require "chimera_mud/core/logging"
-require "chimera_mud/core/nats"
-require "chimera_mud/core/ractor"
-require "chimera_mud/core/plugin"
-require "chimera_mud/core/manager"
-require "chimera_mud/core/ractor_manager"
+require "chimera_mud/plugin"
 
 module ChimeraMud
   module Core
