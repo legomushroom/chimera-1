@@ -6,6 +6,10 @@ module ChimeraMud
     # Formatter for ChimeraMud logging.
     class Formatter < Logger::Formatter
       ##
+      # @return [String] tag the tag being used by the logger.
+      attr_reader :tag
+
+      ##
       # @param [String] tag the tag to append to log lines.
       def initialize(tag = nil)
         super()
@@ -17,10 +21,6 @@ module ChimeraMud
 
         "#{severity}, [#{time} ##{$$}] -- #{msg}\n"
       end
-
-      private
-
-      attr_reader :tag
     end
   end
 end

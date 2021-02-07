@@ -9,10 +9,14 @@ module ChimeraMud
         logger = TaggedLogger.new("test")
 
         assert_equal logger.formatter.class, Formatter
+        assert_equal logger.tag, "test"
+      end
 
-        tag = logger.formatter.instance_variable_get(:@tag)
+      def test_tagged_logger
+        logger = TaggedLogger.new("test")
+        sub = logger.tagged_logger("test")
 
-        assert_equal tag, "test"
+        assert_equal sub.tag, "test.test"
       end
     end
   end
