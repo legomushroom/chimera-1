@@ -8,7 +8,7 @@ require "rails/all"
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
-require "chimera_mud"
+require "mjolnir"
 
 module Dummy
   class Application < Rails::Application
@@ -24,4 +24,4 @@ module Dummy
   end
 end
 
-require_relative "chimera"
+require_relative "mjolnir"

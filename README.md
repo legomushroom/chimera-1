@@ -1,4 +1,4 @@
-# Chimera
+# Mjolnir
 Short description and motivation.
 
 ## Usage

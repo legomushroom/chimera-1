@@ -1,15 +1,8 @@
 PATH
   remote: .
   specs:
-    chimera_mud (0.1.0)
-      chimera_mud-core (= 0.1.0)
-      chimera_mud-server (= 0.1.0)
+    mjolnir_mud (0.1.0)
       rails (~> 6.1)
-    chimera_mud-core (0.1.0)
-      rails (~> 6.1)
-    chimera_mud-server (0.1.0)
-      chimera_mud-core (= 0.1.0)
-      rails (~> 6.1.1)
 
 GEM
   remote: https://rubygems.org/
@@ -246,9 +239,9 @@ PLATFORMS
 
 DEPENDENCIES
   byebug
-  chimera_mud!
   debase
   dotenv-rails
+  mjolnir_mud!
   pry-byebug
   puma
   rspec-rails

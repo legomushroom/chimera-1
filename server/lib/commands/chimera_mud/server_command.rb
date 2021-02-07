@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 
 require "rails"
-require "chimera_mud/core"
-require "chimera_mud/server"
+require "mjolnir/core"
+require "mjolnir/server"
 
-module ChimeraMud
+module Mjolnir
   # :nodoc:
   class ServerCommand < Rails::Command::Base
     def start
-      ChimeraMud::Core.start(ChimeraMud::Server::Plugin)
+      Mjolnir::Core.start(Mjolnir::Server::Plugin)
     end
   end
 end
