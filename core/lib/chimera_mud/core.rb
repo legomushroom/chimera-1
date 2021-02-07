@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "chimera_mud/logging"
+
 require "chimera_mud/core/engine"
 require "chimera_mud/core/path_resolver"
 require "chimera_mud/core/logging"

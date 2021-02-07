@@ -20,4 +20,5 @@ group :development, :test do
   gem "ruby-debug-ide"
   gem "simplecov"
   gem "solargraph"
+  gem "sqlite3"
 end
