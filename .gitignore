@@ -1,6 +1,6 @@
 /.bundle/
 /doc/
-/log/*.log
+*.log
 /pkg/
 /tmp/
 /spec/dummy/log/*.log
