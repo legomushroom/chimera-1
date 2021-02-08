@@ -24,6 +24,7 @@ module Mjolnir
           glob: "*_manager.rb"
         )
         @loaded_plugins = {}
+        @loaded_managers = {}
       end
 
       ##
@@ -31,11 +32,20 @@ module Mjolnir
       def start
         puts_banner
         load_plugins
+        start_managers
+      end
+
+      ##
+      # Gets the specificed manager
+      #
+      # @return [Mjolnir::Manager::Base] the manager of the given name
+      def get_manager(name)
+        loaded_managers.fetch(name.to_s)
       end
 
       private
 
-      attr_reader :loaded_plugins
+      attr_reader :loaded_plugins, :loaded_managers, :managers
 
       def puts_banner
         "Chimera MUD Engine - #{cannonical_name.to_s.capitalize} - " \
@@ -49,6 +59,17 @@ module Mjolnir
           plugin = descendant.new
           plugin.load
           loaded_plugins[plugin.cannonical_name] = plugin
+        end
+      end
+
+      def start_managers
+        logger.info "starting managers..."
+        managers.each do |name, file|
+          logger.info "   starting #{name}"
+          require(file)
+          manager = name.classify.constantize.new(plugin: self)
+          loaded_managers[name] = manager
+          manager.start
         end
       end
     end

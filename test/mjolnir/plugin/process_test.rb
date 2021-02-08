@@ -18,6 +18,18 @@ module Mjolnir
 
         loaded_mock.verify
       end
+
+      def test_start_loads_managers
+        process = Dummy::TestProcess.new
+        process.start
+
+        # test manager is defined in dummy/app/managers, and autoloaded on
+        # plugin start
+        manager = process.get_manager(:test_manager)
+        sleep 0.1 until manager.alive?
+        assert_instance_of TestManager, manager
+        assert manager.alive?
+      end
     end
   end
 end
