@@ -2,7 +2,7 @@
 
 module Mjolnir
   module Server
-    class Plugin < Mjolnir::Core::Plugin
+    class Plugin < Mjolnir::Plugin::Process
       include Core::Ractor::Common
 
       attr_reader :socket_pipe

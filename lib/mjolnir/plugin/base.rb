@@ -3,13 +3,13 @@
 module Mjolnir
   module Plugin
     ##
-    # Plugins are the core way to extend a Chimera Mud based game. The engine is
+    # Plugins are the core way to extend a Mjolnir Mud based game. The engine is
     # built such that all aspects are considered plugins, including the game
     # itself. Plugins have two core requirements:
     #
     #   1. that the plugin be wthin a [Rails Engine]() or:
     #   2. that a plugin be declared within a Rails application in
-    #      `config/chimera.rb`
+    #      `config/mjolnir.rb`
     class Base
       include Logging::Direct
       class << self
@@ -21,7 +21,11 @@ module Mjolnir
           name.split("::")[-2].underscore.to_sym
         end
 
-        def on_load; end
+        def on_load(&block)
+          @on_load = block if block_given?
+
+          @on_load
+        end
 
         def descendants
           super.select { |d| d != Process }
@@ -46,7 +50,7 @@ module Mjolnir
           dirs.reduce("/") do |p, dir|
             if (File.exist?(File.join(p, "Gemfile")) ||
                 File.exist?(File.join(p, "config.ru"))) &&
-               !File.exist?(File.join(p, "mjolnir.gemspec"))
+               !File.exist?(File.join(p, "mjolnir_mud.gemspec"))
               return p
             end
 
@@ -57,6 +61,10 @@ module Mjolnir
         def path_regexp(base)
           %r{(#{base.name.underscore}|config/mjolnir\.rb)}
         end
+      end
+
+      def load
+        self.class.on_load.call
       end
 
       delegate :cannonical_name, to: :class

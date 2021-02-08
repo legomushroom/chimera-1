@@ -3,6 +3,7 @@
 module Mjolnir
   module Plugin
     class ProcessTest < ActiveSupport::TestCase
+
     end
   end
 end

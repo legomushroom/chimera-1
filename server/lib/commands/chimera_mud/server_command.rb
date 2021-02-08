@@ -8,7 +8,7 @@ module Mjolnir
   # :nodoc:
   class ServerCommand < Rails::Command::Base
     def start
-      Mjolnir::Core.start(Mjolnir::Server::Plugin)
+      Mjolnir.start(Mjolnir::Server::Plugin)
     end
   end
 end

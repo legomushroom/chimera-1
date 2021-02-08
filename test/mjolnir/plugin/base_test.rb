@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "test_helper"
+require "minitest/mock"
 
 module Mjolnir
   module Plugin
@@ -30,6 +31,27 @@ module Mjolnir
 
       def test_has_logger
         assert_instance_of Logging::TaggedLogger, dummy.logger
+      end
+
+      def test_on_laod
+        mock = Minitest::Mock.new
+
+        plugin = Dummy::Plugin
+
+        def plugin.loaded; end
+
+        plugin.instance_eval do
+          on_load do
+            loaded
+          end
+        end
+
+        mock.expect(:call, nil)
+        plugin.stub(:loaded, mock) do
+          plugin.new.load
+        end
+
+        mock.verify
       end
     end
   end

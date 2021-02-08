@@ -16,7 +16,7 @@ module Mjolnir
 
       def start(plug)
         require(File.join(Dir.pwd, "config", "environment.rb"))
-        puts "Chimera MUD Engine - #{name}"
+        puts "Mjolnir MUD Engine - #{name}"
         logger.info("loading plugins")
         p = nil
         Plugin.descendants.each do |plugin|

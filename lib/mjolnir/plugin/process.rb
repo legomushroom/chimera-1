@@ -23,7 +23,7 @@ module Mjolnir
           app_dir: "managers",
           glob: "*_manager.rb"
         )
-        @loaded_plugins = []
+        @loaded_plugins = {}
       end
 
       def start
@@ -33,6 +33,8 @@ module Mjolnir
 
       private
 
+      attr_reader :loaded_plugins
+
       def puts_banner
         "Chimera MUD Engine - #{cannonical_name.to_s.capitalize} - " \
             "v#{Mjolnir::VERSION}"
@@ -40,7 +42,9 @@ module Mjolnir
 
       def load_plugins
         Base.descendants.each do |descendant|
-
+          plugin = descendant.new
+          plugin.on_load
+          loaded_plugins[plugin.cannonical_name] = plugin
         end
       end
     end
