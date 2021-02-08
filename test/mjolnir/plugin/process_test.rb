@@ -13,7 +13,10 @@ module Mjolnir
 
         # loaded is called by Dummy::Plugin::on_load
         Dummy::Plugin.stub(:loaded, loaded_mock) do
-          Dummy::TestProcess.new.start
+          process = Dummy::TestProcess.new
+          process.start
+          sleep 0.1 until process.alive?
+          process.stop
         end
 
         loaded_mock.verify
@@ -29,6 +32,7 @@ module Mjolnir
         sleep 0.1 until manager.alive?
         assert_instance_of TestManager, manager
         assert manager.alive?
+        process.stop
       end
     end
   end

@@ -33,6 +33,28 @@ module Mjolnir
         puts_banner
         load_plugins
         start_managers
+        @thread = Thread.new do
+          sleep 10 until stopped
+        end
+      end
+
+      ##
+      # Joins the process thread.
+      def join
+        thread.join
+      end
+
+      ##
+      # @return [Boolean] if the process is alive or dead
+      def alive?
+        thread.alive?
+      end
+
+      ##
+      # Stops the plugin process
+      def stop
+        @stopped = true
+        stop_managers
       end
 
       ##
@@ -45,7 +67,8 @@ module Mjolnir
 
       private
 
-      attr_reader :loaded_plugins, :loaded_managers, :managers
+      attr_reader :loaded_plugins, :loaded_managers, :managers, :thread,
+                  :stopped
 
       def puts_banner
         "Chimera MUD Engine - #{cannonical_name.to_s.capitalize} - " \
@@ -70,6 +93,14 @@ module Mjolnir
           manager = name.classify.constantize.new(plugin: self)
           loaded_managers[name] = manager
           manager.start
+        end
+      end
+
+      def stop_managers
+        logger.info "stopping managers..."
+        loaded_managers.each do |name, manager|
+          logger.info "  stopping #{name}"
+          manager.stop
         end
       end
     end
