@@ -26,7 +26,7 @@ module Mjolnir
       # @param [String] glob the glob pattern for which to look for files
       def initialize(plugin:, app_dir:, glob:)
         @plugin = plugin
-        @paths = Plugin.descendants.map do |p|
+        @paths = Plugin::Base.descendants.map do |p|
           p.root.join("app", app_dir)
         end
         @glob = glob

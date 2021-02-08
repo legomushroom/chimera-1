@@ -26,6 +26,8 @@ module Mjolnir
         @loaded_plugins = {}
       end
 
+      ##
+      # Starts the plugin process.
       def start
         puts_banner
         load_plugins
@@ -41,9 +43,11 @@ module Mjolnir
       end
 
       def load_plugins
+        logger.info "loading plugins..."
         Base.descendants.each do |descendant|
+          logger.info "   loading #{descendant}"
           plugin = descendant.new
-          plugin.on_load
+          plugin.load
           loaded_plugins[plugin.cannonical_name] = plugin
         end
       end

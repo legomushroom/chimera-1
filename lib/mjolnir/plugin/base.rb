@@ -24,7 +24,7 @@ module Mjolnir
         def on_load(&block)
           @on_load = block if block_given?
 
-          @on_load
+          @on_load || proc {}
         end
 
         def descendants
