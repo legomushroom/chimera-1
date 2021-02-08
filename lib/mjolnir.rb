@@ -2,6 +2,8 @@
 
 require "active_support"
 
+require_relative "./core_ext"
+
 require "mjolnir/version"
 require "mjolnir/logging"
 require "mjolnir/support"

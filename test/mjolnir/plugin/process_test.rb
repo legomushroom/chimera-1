@@ -33,6 +33,7 @@ module Mjolnir
         assert_instance_of TestManager, manager
         assert manager.alive?
         process.stop
+        sleep 0.1 while process.alive?
       end
     end
   end
